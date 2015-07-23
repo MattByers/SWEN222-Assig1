@@ -3,13 +3,10 @@ package game;
 import game.cards.*;
 import game.cards.person.*;
 import game.cards.item.*;
-import game.cards.room.*;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class GameOfCluedo {
 	

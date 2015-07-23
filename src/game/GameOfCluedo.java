@@ -18,23 +18,39 @@ public class GameOfCluedo {
 	private ArrayList<PersonCard> personCards = new ArrayList<PersonCard>();
 	
 	private ArrayList<Card> deck = new ArrayList<Card>();
-	private ArrayList<Card> envelop = new ArrayList<Card>();
+	private ArrayList<Card> envelope = new ArrayList<Card>();
 	
 	protected Board board;
 	
 	public GameOfCluedo (int numPlayers){
-		this.board = new Board();
-		initCards();
-		
 		this.numPlayers = numPlayers;
-		for(int i = 0; i < numPlayers || i < 4; i++){
-			addPlayer();
-		}
 		
+		this.board = new Board();
+		
+		initCards();
+		initEnvelope();
+		addPlayers();
+		createDeck();
 		dealCards();
 		
 	}
 	
+	private void createDeck() {
+		for(int i = 0; i < 9; i++){
+			this.deck.add(this.roomCards.get(0));
+			if(i < 5){
+				this.deck.add(this.personCards.get(0));
+				this.deck.add(this.itemCards.get(0));
+			}
+		}		
+	}
+
+	private void initEnvelope() {
+		this.envelope.add(getRandomPersonCard());
+		this.envelope.add(getRandomItemCard());
+		this.envelope.add(getRandomRoomCard());
+	}
+
 	private void dealCards() {
 		Collections.shuffle(this.deck);
 		for(int pos = 0; !this.deck.isEmpty(); pos++){
@@ -59,26 +75,29 @@ public class GameOfCluedo {
 		this.itemCards.add(new Dagger());
 	}
 
-	private void addPlayer(){
-		PersonCard identity = getRandomPersonCard();
-		this.players.add(new Player(identity));
-		this.personCards.remove(identity);
+	private void addPlayers(){
+		for(int i = 0; i < this.numPlayers || i < 4; i++){
+			Collections.shuffle(this.personCards);
+			PersonCard identity = this.personCards.get(0);
+			this.players.add(new Player(identity));
+		}
+		
 	}
 
 	
 	
 	private PersonCard getRandomPersonCard() {
 		Collections.shuffle(this.personCards);
-		return this.personCards.get(0);
+		return this.personCards.remove(0);
 	}
 	
 	private ItemCard getRandomItemCard() {
 		Collections.shuffle(this.itemCards);
-		return this.itemCards.get(0);
+		return this.itemCards.remove(0);
 	}
 	
 	private RoomCard getRandomRoomCard() {
 		Collections.shuffle(this.roomCards);
-		return this.roomCards.get(0);
+		return this.roomCards.remove(0);
 	}
 }

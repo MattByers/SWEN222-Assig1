@@ -24,12 +24,11 @@ public class GameOfCluedo {
 	
 	public GameOfCluedo (int numPlayers){
 		this.numPlayers = numPlayers;
-		
 		this.board = new Board();
 		
 		initCards();
-		initEnvelope();
 		addPlayers();
+		initEnvelope();
 		createDeck();
 		dealCards();
 		

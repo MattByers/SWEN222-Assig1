@@ -4,4 +4,5 @@ import game.cards.ItemCard;
 
 public class Rope extends ItemCard {
 
+	private static final String NAME = "Rope";
 }

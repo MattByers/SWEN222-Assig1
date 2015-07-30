@@ -13,8 +13,11 @@ H = Hall
 S = Study
 X = Center
 
-
-
+Doorways:
+< = Facing left
+> = Facing Right
+v = Facing Down
+^ = Facing Up
 
 
 
@@ -23,23 +26,23 @@ K K K K K ~ # P P P B B B B P P P # C C C C C C
 K K K K K K P P B B B B B B B B P P C C C C C C
 K K K K K K P P B B B B B B B B P P C C C C C C
 K K K K K K P P B B B B B B B B P P C C C C C C
-K K K K K K P P B< B B B B B B B> P P P C C C ~ #
-# K K K Kv K P P B B B B B B B P P P P P P P P 3
-P P P P P P P P B Bv B B B B Bv B P P P P P P P #
+K K K K K K P P < B B B B B B > P P P C C C ~ #
+# K K K v K P P B B B B B B B P P P P P P P P 3
+P P P P P P P P B v B B B B v B P P P P P P P #
 # P P P P P P P P P P P P P P P P P G G G G G G
-D D D D D P P P P P P P P P P P P P G< G G G G G
+D D D D D P P P P P P P P P P P P P < G G G G G
 D D D D D D D D P P X X X X X P P P G G G G G G
 D D D D D D D D P P X X X X X P P P G G G G G G
-D D D D D D D D> P P X X X X X P P P G G G G G G
+D D D D D D D > P P X X X X X P P P G G G G G G
 D D D D D D D D P P X X X X X P P P P P P P P P
 D D D D D D D D P P X X X X X P P P L L L L L #
-D D D D D D D Dv P P X X X X X P P L L L L L L L
-# P P P P P P P P P X X X X X P P L< L L L L L L
+D D D D D D D v P P X X X X X P P L L L L L L L
+# P P P P P P P P P X X X X X P P < L L L L L L
 6 P P P P P P P P P P P P P P P P L L L L L L L
-# P P P P P P P P H H H^ H^ H H P P P L L L L L #
-~ T T T T T T^ P P H H H H H H P P P P P P P P 4
-T T T T T T T P P H H H H H H> P P P P P P P P #
-T T T T T T T P P H H H H H H P P S^ S S S S S ~
+# P P P P P P P P H H ^ ^ H H P P P L L L L L #
+~ T T T T T ^ P P H H H H H H P P P P P P P P 4
+T T T T T T T P P H H H H H > P P P P P P P P #
+T T T T T T T P P H H H H H H P P ^ S S S S S ~
 T T T T T T T P P H H H H H H P P S S S S S S S
 T T T T T T T P P H H H H H H P P S S S S S S S
 T T T T T T # 5 # H H H H H H # P # S S S S S S

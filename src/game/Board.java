@@ -1,5 +1,8 @@
 package game;
 
+import game.squares.Square;
+import game.squares.Walkway;
+
 import java.io.File;
 
 
@@ -7,9 +10,6 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
-import Squares.Square;
-import Squares.Walkway;
 
 public class Board {
 	private static final int width = 24;

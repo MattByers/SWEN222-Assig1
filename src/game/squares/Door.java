@@ -1,4 +1,4 @@
-package Squares;
+package game.squares;
 
 public class Door extends Square{
 

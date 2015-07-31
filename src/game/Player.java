@@ -4,6 +4,8 @@ import game.cards.PersonCard;
 
 import java.util.ArrayList;
 
+import Squares.Square;
+
 public class Player {
 	
 	private PersonCard identity;

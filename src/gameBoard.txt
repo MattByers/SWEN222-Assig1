@@ -1,30 +1,26 @@
-# = Wall
-1-6 = Player SPawns
-K = Kitchen
-~ = Staircase
-- = Pathway
-B = Ballroom
-C = Conservatory
-D = Dining Room
-G = Billiard Room
-L = Library
-T = Lounge
-H = Hall
-S = Study
-
-Doorways:
-< = Facing left
-> = Facing Right
-v = Facing Down
-^ = Facing Up
-
+#|Wall
+K|Kitchen
+~|Staircase
+-|Pathway
+B|Ballroom
+C|Conservatory
+D|Dining Room
+G|Billiard Room
+L|Library
+T|Lounge
+H|Hall
+S|Study
+<|Left
+>|Right
+v|Down
+^|Up
 # # # # # # # # # 1 # # # # 2 # # # # # # # # #
 K K K K K ~ # - - - B B B B - - - # C C C C C C
 K K K K K K - - B B B B B B B B - - C C C C C C
 K K K K K K - - B B B B B B B B - - C C C C C C
 K K K K K K - - B B B B B B B B - - C C C C C C
 K K K K K K - - < B B B B B B > - - - C C C ~ #
-# K K K v K - - B B B B B B B - - - - - - - - 3
+# K K K v K - - B B B B B B B B - - - - - - - 3
 - - - - - - - - B v B B B B v B - - - - - - - #
 # - - - - - - - - - - - - - - - - - G G G G G G
 D D D D D - - - - - - - - - - - - - < G G G G G

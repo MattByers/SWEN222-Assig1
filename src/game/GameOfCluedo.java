@@ -5,6 +5,7 @@ import game.cards.person.*;
 import game.cards.rooms.*;
 import game.cards.item.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -135,7 +136,7 @@ public class GameOfCluedo {
 	
 	public static void clearConsole(){
 		for(int i = 0; i < 1000; i++){
-		    System.out.println("\b");
+			System.out.println("");
 		}
 	}
 	

@@ -2,6 +2,10 @@ package game.cards;
 
 import game.Card;
 
-public class ItemCard extends Card {
+public abstract class ItemCard extends Card {
+
+	public ItemCard(String name) {
+		super(name);
+	}
 
 }

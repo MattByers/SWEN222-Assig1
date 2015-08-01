@@ -2,6 +2,10 @@ package game.cards;
 
 import game.Card;
 
-public class RoomCard extends Card {
+public abstract class RoomCard extends Card {
+
+	public RoomCard(String name) {
+		super(name);
+	}
 
 }

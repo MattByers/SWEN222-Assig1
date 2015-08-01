@@ -2,9 +2,13 @@ package game;
 
 public abstract class Card {
 	
-	private static final String NAME = null;
+	private String name = null;
+	
+	public Card(String name){
+		this.name = name;
+	}
 
 	public String getName(){
-		return this.NAME;
+		return this.name;
 	}
 }

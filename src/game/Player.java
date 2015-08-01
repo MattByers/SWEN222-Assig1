@@ -43,6 +43,8 @@ public class Player {
 		this.input = input;
 		this.finished = false;
 		
+		GameOfCluedo.clearConsole();
+		
 		System.out.printf("Player %d (%S), it is your turn!\n", this.playerNum, this.identity.getName());
 		System.out.println("WARNING: Others players look away now");
 		try {
@@ -71,16 +73,21 @@ public class Player {
 		this.finished = true;
 	}
 	
+	//THIS METHOD IS BROKE TO FUCK
 	private void movePlayer(){
-		for(this.diceRoll = this.diceRoll; this.diceRoll > 0; this.diceRoll--){
+		while(this.diceRoll > 0){
 			System.out.printf("You have %d moves left, which direction would you like to move? (u,d,l,r): ", this.diceRoll);
 			String direction = input.next();
-			if(!DIR_LIST.contains(direction) || this.board.checkMove(this, direction)){
-				System.out.println(input + " is and invalid direction. Please try again.");
+			if(DIR_LIST.contains(direction) && this.board.checkMove(this, direction)){
+				System.out.println("Too fucking bad");
+				this.diceRoll--;
+				this.diceRoll = 0;
+			}
+			else{
+				System.out.println("That is an invalid direction. Please try again.");
 				continue;
 			}
-			System.out.println("Too fucking bad");
-			this.diceRoll = 0;
+			
 		}
 	}
 	

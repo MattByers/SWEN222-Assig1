@@ -133,6 +133,12 @@ public class GameOfCluedo {
 		return this.roomCards.remove(0);
 	}
 	
+	public static void clearConsole(){
+		for(int i = 0; i < 1000; i++){
+		    System.out.println("\b");
+		}
+	}
+	
 	public static void main(String [] args){
 		new GameOfCluedo();
 	}

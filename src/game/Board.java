@@ -29,6 +29,8 @@ public class Board {
 		printToConsole();
 		addAndLinkRooms();
 		addDoors();
+		testStairs();
+		testDoors();
 	}
 
 	private Square[][] parseBoard(Scanner sc) {
@@ -115,7 +117,19 @@ public class Board {
 		}
 		return board;
 	}
-
+	
+	public void testStairs(){
+		for(Room r : roomList){
+			System.out.println(r.getStairs());
+		}
+	}
+	
+	public void testDoors(){
+		for(DoorSquare d : doorList){
+			System.out.println(d.getX() + "," +  d.getY() + "," + d.getID());
+		}
+	}
+	
 	public void printToConsole() {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
@@ -198,7 +212,12 @@ public class Board {
 			return false;
 		}
 	}
-
+	
+	//Getters
+	public ArrayList<Room> getRoomList(){return this.roomList;}
+	public ArrayList<PlayerSpawnSquare> getSpawnList(){return this.spawnList;}
+	public ArrayList<DoorSquare> getDoorList(){return this.doorList;}
+	
 	public static void main(String[] args) {
 		new Board();
 	}

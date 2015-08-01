@@ -91,7 +91,7 @@ public class Board {
 
 	public void printToConsole(){
 		for(int i = 0; i < height; i++){
-			for(int j = 0; j < width-1; j++){
+			for(int j = 0; j < width; j++){
 				System.out.print(board[i][j].getID());
 			}
 			System.out.println();

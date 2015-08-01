@@ -16,7 +16,9 @@ public class Player {
 	private static final String STAIRS = "use stairs";
 	private static final String SUGGEST = "suggestion";
 	private static final String ACCUSE = "accusation";
+	private static final String LEAVE_ROOM = "leave room";
 	private static final ArrayList<String> NORMAL_ACTIONS = new ArrayList<String>(Arrays.asList(MOVE, SHOW_CARDS, END, ACCUSE));
+	private static final ArrayList<String> ROOM_ACTIONS = new ArrayList<String>(Arrays.asList(SUGGEST, LEAVE_ROOM));
 	private static final ArrayList<String> DIR_LIST = new ArrayList<String>(Arrays.asList("u", "d", "l", "r"));
 	
 	private int playerNum;
@@ -34,7 +36,7 @@ public class Player {
 		this.identity = identity;
 		this.playerNum = playerNum;
 		this.board = board;
-		this.location = new Square(1, 9, '@');
+		this.location = this.board.getSpawnList().get(this.playerNum - 1);
 	}
 	
 	public void giveCard (Card card){
@@ -52,25 +54,20 @@ public class Player {
 		
 		this.possibleActions.addAll(NORMAL_ACTIONS);
 		if(this.room != null) {
-			this.possibleActions.add(SUGGEST);
+			this.possibleActions.addAll(ROOM_ACTIONS);
 			if(this.room.getStairs() != null) this.possibleActions.add(STAIRS);
 		}
 		
 		GameOfCluedo.clearConsole();
 		
 		System.out.printf("Player %d, it is your turn!\n", this.playerNum);
-		System.out.println("WARNING: Others players look away now");
-		try {
-			Thread.sleep(3000);
-		} catch (InterruptedException e) {
-			System.out.println("Exception " + e + " found in sleep.");
-		}
+
 		rollDice();
 		
 		while(!this.finished){
-			System.out.print("What would you like to do? Your options are ");
+			System.out.print("What would you like to do? Your options are: ");
 			for(String action : this.possibleActions){
-				System.out.print(action + " ");
+				System.out.print("{" + action + "} ");
 			}
 			String currentAction = input.nextLine();
 			if(!this.possibleActions.contains(currentAction)){
@@ -93,6 +90,9 @@ public class Player {
 			case SUGGEST:
 				suggestion();
 				break;
+			case LEAVE_ROOM:
+				leaveRoom();
+				break;
 			case STAIRS:
 				useStairs();
 				break;
@@ -102,6 +102,11 @@ public class Player {
 		}
 	}
 	
+	private void leaveRoom() {
+		this.location = this.room.getDoorList().get(0);
+		this.room = null;
+	}
+
 	private void useStairs() {
 		// TODO Auto-generated method stub
 		
@@ -118,6 +123,15 @@ public class Player {
 	}
 
 	private void showCards(){
+		
+		System.out.println("WARNING: About to show cards, other players look away now!");
+		
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			System.out.println("Exception " + e + " found in sleep.");
+		}
+		
 		for(Card c : this.hand){
 			System.out.print(c.getName() + ", ");
 		}
@@ -134,15 +148,17 @@ public class Player {
 			System.out.printf("You have %d moves left, which direction would you like to move? (u,d,l,r): ", this.diceRoll);
 			String direction = input.next();
 			if(DIR_LIST.contains(direction) && this.board.checkMove(this, direction)){
-				System.out.println("Too fucking bad");
+				//this.location = this.board.playerMove(this, direction);
+				if(this.location instanceof DoorSquare){
+					this.room = ((DoorSquare)this.location).getRoom();
+					this.location = this.room.getSquareList().get(0);
+				}
 				this.diceRoll--;
-				this.diceRoll = 0;
 			}
 			else{
 				System.out.println("That is an invalid direction. Please try again.");
 				continue;
 			}
-			
 		}
 		this.possibleActions.remove(MOVE);
 	}

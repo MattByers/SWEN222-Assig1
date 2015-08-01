@@ -13,7 +13,7 @@ public class Player {
 	private static final String SHOW_CARDS = "show cards";
 	private static final String END = "end";
 	private static final ArrayList<String> ACTION_LIST = new ArrayList<String>(Arrays.asList(MOVE, SHOW_CARDS, END));
-	private static final ArrayList<String> DIR_LIST = new ArrayList<String>(Arrays.asList("U", "D", "L", "R"));
+	private static final ArrayList<String> DIR_LIST = new ArrayList<String>(Arrays.asList("u", "d", "l", "r"));
 	
 	private int playerNum;
 	private PersonCard identity;
@@ -73,7 +73,7 @@ public class Player {
 	
 	private void movePlayer(){
 		for(this.diceRoll = this.diceRoll; this.diceRoll > 0; this.diceRoll--){
-			System.out.printf("You have %d moves left, which direction would you like to move? (L,R,U,D): ", this.diceRoll);
+			System.out.printf("You have %d moves left, which direction would you like to move? (u,d,l,r): ", this.diceRoll);
 			String direction = input.next();
 			if(!DIR_LIST.contains(direction) || this.board.checkMove(this, direction)){
 				System.out.println(input + " is and invalid direction. Please try again.");
@@ -82,5 +82,9 @@ public class Player {
 			System.out.println("Too fucking bad");
 			this.diceRoll = 0;
 		}
+	}
+	
+	private Square getLocation(){
+		return this.location;
 	}
 }

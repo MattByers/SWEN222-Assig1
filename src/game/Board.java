@@ -1,5 +1,6 @@
 package game;
 
+import game.rooms.*;
 import game.squares.*;
 
 import java.io.File;
@@ -16,7 +17,7 @@ public class Board {
 	private static final int width = 24;
 	private static final int height = 25;
 	public Square[][] board = new Square[width][height];
-	private ArrayList<RoomSquare> roomList = new ArrayList<>();
+	private ArrayList<Room> roomList = new ArrayList<>();
 	private ArrayList<Square> spawnList = new ArrayList<>();
 	private ArrayList<Square> doorList = new ArrayList<>();
 
@@ -33,6 +34,7 @@ public class Board {
 		}
 
 		printToConsole();
+		addAndLinkRooms();
 	}
 
 	private Square[][] parseBoard(Scanner sc) {
@@ -46,7 +48,6 @@ public class Board {
 	private Square[][] parseSquares(Scanner sc) {
 		String next;
 		Square[][] board = new Square[height][width];
-		final Pattern numbers = Pattern.compile("[0-9]+");
 
 		for(int i = 0; i < height; i++){
 			for(int j = 0; j < width; j++){
@@ -103,6 +104,34 @@ public class Board {
 		}
 	}	
 
+	public void addAndLinkRooms(){		
+		//Add all rooms to list
+		roomList.add(new Ballroom());
+		roomList.add(new DiningRoom());
+		roomList.add(new BilliardRoom());
+		roomList.add(new Library());
+		roomList.add(new Hall());
+		roomList.add(new Kitchen());
+		roomList.add(new Study());
+		roomList.add(new Lounge());
+		roomList.add(new Conservatory());
+		
+		//Link stairs to necesarry rooms
+		getRoom("Kitchen").addStairs(getRoom("Study"));
+		getRoom("Study").addStairs(getRoom("Kitchen"));
+		getRoom("Lounge").addStairs(getRoom("Conservatory"));
+		getRoom("Conservatory").addStairs(getRoom("Lounge"));
+	}
+	
+	public Room getRoom(String name){
+		for(Room r : roomList){
+			if(r.getName().equals(name)){
+				return r;
+			}
+		}
+		return null;
+	}
+	
 	public boolean checkMove(Player p, String dir){
 		Square current = p.getLocation();
 		switch(dir){

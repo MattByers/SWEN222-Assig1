@@ -4,9 +4,9 @@ import game.squares.*;
 
 import java.util.ArrayList;
 
-public class Room {
+public abstract class Room {
 
-	private String roomName;
+	private final String roomName;
 	private ArrayList<RoomSquare> squareList = new ArrayList<>();
 	private Room stairs = null;
 	private ArrayList<DoorSquare> doorList = new ArrayList<>();
@@ -30,7 +30,7 @@ public class Room {
 		this.doorList.add(new DoorSquare(x,y,ID));
 	}
 	
-	public void addName(String name){
-		this.roomName = name;
+	public void addStairs(Room stairs){
+		this.stairs = stairs;
 	}
 }

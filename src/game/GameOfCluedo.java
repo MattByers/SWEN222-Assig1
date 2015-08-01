@@ -24,7 +24,7 @@ public class GameOfCluedo {
 	private ArrayList<Card> deck = new ArrayList<Card>();
 	private ArrayList<Card> envelope = new ArrayList<Card>();
 	
-	protected Board board;
+	private Board board;
 	
 	private Scanner input = new Scanner(System.in);
 	
@@ -54,7 +54,7 @@ public class GameOfCluedo {
 	private void startGame() {
 		while(playing){
 			for(Player p : this.players){
-				p.takeTurn();
+				p.takeTurn(this.input);
 			}
 		}
 	}
@@ -113,7 +113,7 @@ public class GameOfCluedo {
 		for(int i = 0; i < this.numPlayers; i++){
 			Collections.shuffle(this.personCards);
 			PersonCard identity = this.personCards.get(0);
-			this.players.add(new Player(identity, i+1));
+			this.players.add(new Player(identity, i+1, this.board));
 		}
 	}
 

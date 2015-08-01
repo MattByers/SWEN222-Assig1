@@ -3,18 +3,18 @@ package game.squares;
 public class Square {
 	private int XLoc;
 	private int YLoc;
-	private char name;
+	private char ID;
 
-	public Square(int x, int y, char name){
+	public Square(int x, int y, char ID){
 		this.XLoc = x;
 		this.YLoc = y;
-		this.name = name;
+		this.ID = ID;
 	}		
 	
 	public int getX(){return this.XLoc;}
 	
 	public int getY(){return this.YLoc;}
 	
-	public char getName(){return this.name;}
+	public char getID(){return this.ID;}
 }
 

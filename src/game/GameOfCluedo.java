@@ -11,8 +11,11 @@ import java.util.Scanner;
 
 public class GameOfCluedo {
 	
+	private boolean playing;
+	
 	private int numPlayers;
 	protected ArrayList<Player> players = new ArrayList<Player>();
+	protected ArrayList<Player> finishedPlayers = new ArrayList<Player>();
 	
 	private ArrayList<ItemCard> itemCards = new ArrayList<ItemCard>();
 	private ArrayList<RoomCard> roomCards = new ArrayList<RoomCard>();
@@ -29,8 +32,13 @@ public class GameOfCluedo {
 		System.out.println("Welcome to Cluedo!");
 		System.out.println("WARNING: THIS GAME IS TRASH!");
 		
-		System.out.print("Please enter your desired number of players: ");
-		this.numPlayers = Integer.parseInt(input.nextLine());
+		int numPlayers = 0;
+		while(numPlayers < 3){
+			System.out.print("Please enter your desired number of players (3-6): ");
+			numPlayers = Integer.parseInt(input.nextLine());
+		}
+		this.numPlayers = numPlayers;
+		
 		this.board = new Board();
 		
 		initCards();
@@ -39,8 +47,18 @@ public class GameOfCluedo {
 		createDeck();
 		dealCards();
 		
+		this.playing = true;
+		startGame();
 	}
 	
+	private void startGame() {
+		while(playing){
+			for(Player p : this.players){
+				p.takeTurn();
+			}
+		}
+	}
+
 	private void createDeck() {
 		for(int i = 0; i < 9; i++){
 			this.deck.add(this.roomCards.get(0));
@@ -92,14 +110,13 @@ public class GameOfCluedo {
 	}
 
 	private void addPlayers(){
-		for(int i = 0; i < this.numPlayers || i < 4; i++){
+		for(int i = 0; i < this.numPlayers; i++){
 			Collections.shuffle(this.personCards);
 			PersonCard identity = this.personCards.get(0);
-			this.players.add(new Player(identity));
+			this.players.add(new Player(identity, i+1));
 		}
 	}
 
-	
 	
 	private PersonCard getRandomPersonCard() {
 		Collections.shuffle(this.personCards);

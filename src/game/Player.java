@@ -72,7 +72,7 @@ public class Player {
 			for(String action : this.possibleActions){
 				System.out.print(action + " ");
 			}
-			String currentAction = input.next();
+			String currentAction = input.nextLine();
 			if(!this.possibleActions.contains(currentAction)){
 				System.out.println("That is an invalid action. Please try again.");
 				continue;

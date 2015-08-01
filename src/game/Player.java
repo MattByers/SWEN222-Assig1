@@ -1,10 +1,9 @@
 package game;
 
 import game.cards.PersonCard;
+import game.squares.Square;
 
 import java.util.ArrayList;
-
-import Squares.Square;
 
 public class Player {
 	

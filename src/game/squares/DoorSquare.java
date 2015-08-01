@@ -13,4 +13,8 @@ public class DoorSquare extends Square{
 	public void addRoom(Room room){
 		this.room = room;
 	}
+	
+	public Room getRoom(){
+		return this.room;
+	}
 }

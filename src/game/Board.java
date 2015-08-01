@@ -39,13 +39,12 @@ public class Board {
 	}
 
 	private Square[][] parseSquares(Scanner sc) {
-		//This looks like aids! Please HALP! Teach me to regex LOL
 		String next;
-		Square[][] board = new Square[width][height];
+		Square[][] board = new Square[height][width];
 		final Pattern numbers = Pattern.compile("[0-9]+");
 
-		for(int i = 0; i < width; i++){
-			for(int j = 0; j < height; j++){
+		for(int i = 0; i < height; i++){
+			for(int j = 0; j < width; j++){
 				next = sc.next();
 				if(next.equals(" ")){
 					next = sc.next();
@@ -91,8 +90,8 @@ public class Board {
 	}
 
 	public void printToConsole(){
-		for(int i = 0; i < 24; i++){
-			for (int j = 0; j < 25; i++){
+		for(int i = 0; i < height; i++){
+			for(int j = 0; j < width-1; j++){
 				System.out.print(board[i][j].getID());
 			}
 			System.out.println();

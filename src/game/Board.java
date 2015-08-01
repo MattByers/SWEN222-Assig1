@@ -31,7 +31,7 @@ public class Board {
 		catch(FileNotFoundException e){
 			System.out.println("No file found with name " + boardFile);
 		}
-		
+
 		printToConsole();
 	}
 
@@ -104,9 +104,17 @@ public class Board {
 	}	
 
 	public boolean checkMove(Player p, String dir){
-		return false;
+		Square current = p.getLocation();
+		switch(dir){
+		case "u": return (board[current.getX()-1][current.getY()] instanceof DoorSquare) || (board[current.getX()-1][current.getY()] instanceof WalkwaySquare);
+		case "d": return (board[current.getX()+1][current.getY()] instanceof DoorSquare) || (board[current.getX()+1][current.getY()] instanceof WalkwaySquare);
+		case "l": return (board[current.getX()][current.getY()-1] instanceof DoorSquare) || (board[current.getX()][current.getY()-1] instanceof WalkwaySquare);
+		case "r": return (board[current.getX()][current.getY()+1] instanceof DoorSquare) || (board[current.getX()][current.getY()+1] instanceof WalkwaySquare);
+		default:
+			return false;
+		}
 	}
-	
+
 	public static void main(String[] args){
 		new Board();
 	}

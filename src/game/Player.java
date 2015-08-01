@@ -91,7 +91,7 @@ public class Player {
 		}
 	}
 	
-	private Square getLocation(){
+	public Square getLocation(){
 		return this.location;
 	}
 }

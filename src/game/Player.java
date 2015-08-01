@@ -1,7 +1,8 @@
 package game;
 
 import game.cards.PersonCard;
-import game.squares.Square;
+import game.rooms.*;
+import game.squares.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,22 +13,28 @@ public class Player {
 	private static final String MOVE = "move";
 	private static final String SHOW_CARDS = "show cards";
 	private static final String END = "end";
-	private static final ArrayList<String> ACTION_LIST = new ArrayList<String>(Arrays.asList(MOVE, SHOW_CARDS, END));
+	private static final String STAIRS = "use stairs";
+	private static final String SUGGEST = "suggestion";
+	private static final String ACCUSE = "accusation";
+	private static final ArrayList<String> NORMAL_ACTIONS = new ArrayList<String>(Arrays.asList(MOVE, SHOW_CARDS, END, ACCUSE));
 	private static final ArrayList<String> DIR_LIST = new ArrayList<String>(Arrays.asList("u", "d", "l", "r"));
 	
 	private int playerNum;
 	private PersonCard identity;
 	private ArrayList<Card> hand = new ArrayList<Card>();
 	private Square location;
+	private Room room;
 	private int diceRoll;
 	private boolean finished;
 	private Scanner input;
 	private Board board;
+	private ArrayList<String>possibleActions = new ArrayList<String>();
 	
 	public Player(PersonCard identity, int playerNum, Board board){
 		this.identity = identity;
 		this.playerNum = playerNum;
 		this.board = board;
+		this.location = new Square(1, 9, '@');
 	}
 	
 	public void giveCard (Card card){
@@ -43,9 +50,15 @@ public class Player {
 		this.input = input;
 		this.finished = false;
 		
+		this.possibleActions.addAll(NORMAL_ACTIONS);
+		if(this.room != null) {
+			this.possibleActions.add(SUGGEST);
+			if(this.room.getStairs() != null) this.possibleActions.add(STAIRS);
+		}
+		
 		GameOfCluedo.clearConsole();
 		
-		System.out.printf("Player %d (%S), it is your turn!\n", this.playerNum, this.identity.getName());
+		System.out.printf("Player %d, it is your turn!\n", this.playerNum);
 		System.out.println("WARNING: Others players look away now");
 		try {
 			Thread.sleep(3000);
@@ -56,12 +69,54 @@ public class Player {
 		
 		while(!this.finished){
 			System.out.print("What would you like to do? Your options are ");
-			System.out.println("nothing!");
-			movePlayer();
-			endTurn();
+			for(String action : this.possibleActions){
+				System.out.print(action + " ");
+			}
+			String currentAction = input.next();
+			if(!this.possibleActions.contains(currentAction)){
+				System.out.println("That is an invalid action. Please try again.");
+				continue;
+			}
+			switch(currentAction){
+			case MOVE:
+				movePlayer();
+				break;
+			case SHOW_CARDS:
+				showCards();
+				break;
+			case ACCUSE:
+				accusation();
+				break;
+			case END:
+				endTurn();
+				break;
+			case SUGGEST:
+				suggestion();
+				break;
+			case STAIRS:
+				useStairs();
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	
+	private void useStairs() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void suggestion() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void accusation() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void showCards(){
 		for(Card c : this.hand){
 			System.out.print(c.getName() + ", ");
@@ -89,6 +144,7 @@ public class Player {
 			}
 			
 		}
+		this.possibleActions.remove(MOVE);
 	}
 	
 	public Square getLocation(){

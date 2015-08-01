@@ -4,4 +4,8 @@ import game.cards.RoomCard;
 
 public class Hall extends RoomCard {
 	private static final String NAME = "Hall";
+	
+	public Hall(){
+		super(NAME);
+	}
 }

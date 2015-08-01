@@ -81,7 +81,7 @@ public class Board {
 				break;
 				case "^":board[i][j] = new Door(i,j,'^');
 				break;
-				default: board[i][j] = new PlayerSpawn(i,j,'6');
+				default: board[i][j] = new PlayerSpawn(i,j,next.charAt(0));
 				break;
 				}
 			}

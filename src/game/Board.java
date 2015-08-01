@@ -29,8 +29,8 @@ public class Board {
 		printToConsole();
 		addAndLinkRooms();
 		addDoors();
-		testStairs();
 		testDoors();
+		testStairs();
 	}
 
 	private Square[][] parseBoard(Scanner sc) {
@@ -120,13 +120,22 @@ public class Board {
 	
 	public void testStairs(){
 		for(Room r : roomList){
-			System.out.println(r.getStairs());
+			if(r.getStairs() != null){
+				System.out.println(r.getName() + " --> " + r.getStairs().getName());
+			}
+			else{
+				System.out.println("No stairs in " + r.getName());
+			}
 		}
 	}
 	
 	public void testDoors(){
 		for(DoorSquare d : doorList){
 			System.out.println(d.getX() + "," +  d.getY() + "," + d.getID());
+		}
+		
+		for(Room r : roomList){
+				System.out.print(r.getDoorList());
 		}
 	}
 	
@@ -221,4 +230,5 @@ public class Board {
 	public static void main(String[] args) {
 		new Board();
 	}
+	//TODO roomDoor list is fucked?
 }

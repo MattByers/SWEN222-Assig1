@@ -1,6 +1,8 @@
 package game;
 
+import game.cards.ItemCard;
 import game.cards.PersonCard;
+import game.cards.RoomCard;
 import game.rooms.*;
 import game.squares.*;
 
@@ -108,8 +110,8 @@ public class Player {
 	}
 
 	private void useStairs() {
-		// TODO Auto-generated method stub
-		
+		this.room = this.room.getStairs();
+		System.out.printf("You have used the stairs and are now in the %s.", this.room.getName());
 	}
 
 	private void suggestion() {
@@ -118,13 +120,16 @@ public class Player {
 	}
 
 	private void accusation() {
-		// TODO Auto-generated method stub
+		PersonCard person;
+		ItemCard item;
+		RoomCard room;
+		System.out.printf("Player %d, your accusation of %s, %s, %s was incorrect.");
 		
 	}
 
 	private void showCards(){
 		
-		System.out.println("WARNING: About to show cards, other players look away now!");
+		System.out.println("WARNING: About to show your cards, other players look away now!");
 		
 		try {
 			Thread.sleep(3000);
@@ -152,6 +157,7 @@ public class Player {
 				if(this.location instanceof DoorSquare){
 					this.room = ((DoorSquare)this.location).getRoom();
 					this.location = this.room.getSquareList().get(0);
+					System.out.printf("You have entered the %s", this.room.getName());
 				}
 				this.diceRoll--;
 			}

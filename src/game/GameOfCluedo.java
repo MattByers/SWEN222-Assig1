@@ -61,11 +61,11 @@ public class GameOfCluedo {
 	}
 
 	private void createDeck() {
-		for(int i = 0; i < 9; i++){
-			this.deck.add(this.roomCards.get(0));
+		for(int i = 0; i < 8; i++){
+			this.deck.add(this.roomCards.get(i));
 			if(i < 5){
-				this.deck.add(this.personCards.get(0));
-				this.deck.add(this.itemCards.get(0));
+				this.deck.add(this.personCards.get(i));
+				this.deck.add(this.itemCards.get(i));
 			}
 		}		
 	}

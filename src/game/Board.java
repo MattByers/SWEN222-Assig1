@@ -284,7 +284,7 @@ public class Board {
 		switch (r.getName()) {
 		case "Kitchen":
 			for (RoomSquare rs : r.getSquareList()) {
-				if (rs.getX() == 3 && rs.getY() == p.getPlayerNum()-1) {
+				if (rs.getX() == 3 && rs.getY() == p.getPlayerNum() - 1) {
 					rs.setPlayer(p);
 					return rs;
 				}
@@ -333,7 +333,7 @@ public class Board {
 			break;
 		case "Lounge":
 			for (RoomSquare rs : r.getSquareList()) {
-				if (rs.getX() == 21 && rs.getY() == p.getPlayerNum()-1) {
+				if (rs.getX() == 21 && rs.getY() == p.getPlayerNum() - 1) {
 					rs.setPlayer(p);
 					return rs;
 				}
@@ -360,26 +360,40 @@ public class Board {
 		}
 		return null;
 	}
-	
-	public void leaveRoom(Player p, DoorSquare ds){
-		p.getLocation().setPlayer(null);		
+
+	public void leaveRoom(Player p, DoorSquare ds) {
+		p.getLocation().setPlayer(null);
 		ds.setPlayer(p);
 		playerMap.put(p, ds);
 	}
-	
+
 	public boolean checkMove(Player p, String dir) {
 		Square current = p.getLocation();
 		switch (dir) {
 		case "u":
+			if ((current.getX() - 1) < 0) {
+				return false;
+			}
+
 			return (board[current.getX() - 1][current.getY()] instanceof DoorSquare)
 					|| (board[current.getX() - 1][current.getY()] instanceof WalkwaySquare);
+
 		case "d":
+			if ((current.getX() + 1) > 24) {
+				return false;
+			}
 			return (board[current.getX() + 1][current.getY()] instanceof DoorSquare)
 					|| (board[current.getX() + 1][current.getY()] instanceof WalkwaySquare);
 		case "l":
+			if ((current.getY() - 1) < 0) {
+				return false;
+			}
 			return (board[current.getX()][current.getY() - 1] instanceof DoorSquare)
 					|| (board[current.getX()][current.getY() - 1] instanceof WalkwaySquare);
 		case "r":
+			if ((current.getY() + 1) > 23) {
+				return false;
+			}
 			return (board[current.getX()][current.getY() + 1] instanceof DoorSquare)
 					|| (board[current.getX()][current.getY() + 1] instanceof WalkwaySquare);
 		default:

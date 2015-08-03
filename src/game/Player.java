@@ -126,7 +126,13 @@ public class Player {
 	}
 	
 	private void leaveRoom() {
-		this.location = this.room.getDoorList().get(0);
+		System.out.println("Which door would you like to leave through? (1-n)");
+		for(int i = 0; i < this.room.getDoorList().size(); i++){
+			System.out.printf("{%c : %d}", this.room.getDoorList().get(i).getID(), i+1);
+		}
+		DoorSquare exit = this.room.getDoorList().get(Integer.parseInt(this.input.nextLine()));
+		this.board.leaveRoom(this, exit);
+		this.location = exit;
 		this.room = null;
 		this.possibleActions.removeAll(ROOM_ACTIONS);
 		this.possibleActions.remove(STAIRS);

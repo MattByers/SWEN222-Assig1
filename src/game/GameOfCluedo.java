@@ -153,6 +153,10 @@ public class GameOfCluedo {
 		return numPlayers;
 	}
 
+	public ArrayList<RoomCard> getRoomCards() {
+		return roomCards;
+	}
+
 	public ArrayList<ItemCard> getItemCards() {
 		return itemCards;
 	}

@@ -42,7 +42,7 @@ public class Player {
 		this.identity = identity;
 		this.playerNum = playerNum;
 		
-		this.location = this.board.getSpawnList().get(this.playerNum - 1);
+		this.location = this.board.addPlayer(this);
 		this.hand = new ArrayList<Card>();
 	}
 	
@@ -113,6 +113,7 @@ public class Player {
 	
 	private void rollDice(){
 		this.diceRoll = (int)(Math.random() * 6) + (int)(Math.random() * 6);
+		this.diceRoll = 20; //DEBUG line
 		System.out.println("You rolled a " + this.diceRoll);
 	}
 	
@@ -136,15 +137,31 @@ public class Player {
 		System.out.println("If you are wrong, you will be out of the game! (Y or N)");
 		if(!this.input.nextLine().equals("Y")) return;
 		
-		System.out.println("Who would you like to accuse? Your options are: ");
-		for(PersonCard pc : this.game.getPersonCards()){
-			System.out.printf("%s", pc.getName());
+		System.out.println("Who would you like to accuse? Your options are: (1-6)");
+		for(int i = 0; i < this.game.getPersonCards().size(); i++){
+			System.out.printf("%s : %d", this.game.getPersonCards().get(i), i+1);
 		}
-		PersonCard person;
-		ItemCard item;
-		RoomCard room;
+		int personInd = Integer.parseInt(this.input.nextLine());
+		
+		System.out.println("With which item?? Your options are: (1-6)");
+		for(int i = 0; i < this.game.getItemCards().size(); i++){
+			System.out.printf("%s : %d", this.game.getItemCards().get(i), i+1);
+		}
+		int itemInd = Integer.parseInt(this.input.nextLine());
+		
+		System.out.println("In which room??? Your options are: (1-9)");
+		for(int i = 0; i < this.game.getRoomCards().size(); i++){
+			System.out.printf("%s : %d", this.game.getRoomCards().get(i), i+1);
+		}
+		int roomInd = Integer.parseInt(this.input.nextLine());
+		
+		PersonCard person = this.game.getPersonCards().get(personInd);
+		ItemCard item = this.game.getItemCards().get(itemInd);
+		RoomCard room = this.game.getRoomCards().get(roomInd);
+		
 		System.out.printf("Player %d, your accusation of %s, %s, %s was incorrect.");
 		System.out.printf("You are out of the game!");
+		this.finished = true;
 		this.game.retirePlayer(this);
 		
 	}
@@ -177,7 +194,7 @@ public class Player {
 			System.out.printf("You have %d moves left, which direction would you like to move? (u,d,l,r): ", this.diceRoll);
 			String direction = input.next();
 			if(DIR_LIST.contains(direction) && this.board.checkMove(this, direction)){
-				//this.location = this.board.playerMove(this, direction);
+				this.location = this.board.playerMove(this, direction);
 				if(this.location instanceof DoorSquare){
 					this.room = ((DoorSquare)this.location).getRoom();
 					this.location = this.room.getSquareList().get(0);

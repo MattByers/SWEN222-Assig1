@@ -17,7 +17,7 @@ public class Board {
 	private ArrayList<Room> roomList = new ArrayList<>();
 	private ArrayList<PlayerSpawnSquare> spawnList = new ArrayList<>();
 	private ArrayList<DoorSquare> doorList = new ArrayList<>();
-	private Map<Player, Square> playerList = new HashMap<>();
+	private Map<Player, Square> playerMap = new HashMap<>();
 
 	public Board() {
 		String boardFile = "src/gameBoard.txt";
@@ -195,8 +195,9 @@ public class Board {
 		}
 	}
 
-	public void addPlayer(Player p){
-		playerList.put(p, spawnList.get(p.getPlayerNum()-1));
+	public Square addPlayer(Player p){
+		playerMap.put(p, spawnList.get(p.getPlayerNum()-1));
+		return spawnList.get(p.getPlayerNum()-1);
 	}
 	
 	public Room getRoom(String name) {
@@ -232,6 +233,7 @@ public class Board {
 	public ArrayList<Room> getRoomList(){return this.roomList;}
 	public ArrayList<PlayerSpawnSquare> getSpawnList(){return this.spawnList;}
 	public ArrayList<DoorSquare> getDoorList(){return this.doorList;}
+	public Map<Player, Square> getPlayerMap(){return this.playerMap;}
 	
 	public static void main(String[] args) {
 		new Board();

@@ -72,7 +72,7 @@ public class Player {
 		rollDice();
 		
 		while(!this.finished){
-			if(this.room != null) {
+			if(this.room != null && ! this.possibleActions.contains(ROOM_ACTIONS)) {
 				this.possibleActions.addAll(ROOM_ACTIONS);
 				if(this.room.getStairs() != null) this.possibleActions.add(STAIRS);
 			}
@@ -82,7 +82,9 @@ public class Player {
 				System.out.print("{" + action + "} ");
 			}
 			
+			
 			String currentAction = input.nextLine();
+			System.out.println(currentAction);
 			if(!this.possibleActions.contains(currentAction)){
 				System.out.println("That is an invalid action. Please try again.");
 				continue;
@@ -204,7 +206,8 @@ public class Player {
 				this.location = this.board.playerMove(this, direction);
 				if(this.location instanceof DoorSquare){
 					this.room = ((DoorSquare)this.location).getRoom();
-					this.location = this.room.getSquareList().get(0);
+					this.location = this.room.getSquareList().get(this.room.getSquareList().size() / 2);
+					System.out.printf("new location: %d, %d\n", this.location.getX(), this.location.getY());
 					System.out.printf("You have entered the %s\n", this.room.getName());
 					this.board.printToConsole();
 					return;

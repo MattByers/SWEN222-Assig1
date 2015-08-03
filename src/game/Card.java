@@ -11,4 +11,9 @@ public abstract class Card {
 	public String getName(){
 		return this.name;
 	}
+	
+	public boolean equals(Object o){
+		if(o.getClass() == this.getClass()) return true;
+		return false;
+	}
 }

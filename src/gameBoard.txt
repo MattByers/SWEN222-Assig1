@@ -25,7 +25,6 @@ T T T T T T T - - H H H H H H - - S S S S S S S
 T T T T T T # 5 # H H H H H H # - # S S S S S S
 #|Wall
 K|Kitchen
-~|Staircase
 -|Pathway
 B|Ballroom
 C|Conservatory

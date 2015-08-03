@@ -65,7 +65,7 @@ public class Board {
 				case "K":
 					tempSquare = new RoomSquare(i, j, 'K', "Kitchen");
 					board[i][j] = tempSquare;
-					//getRoom("Kitchen").addSquare(tempSquare);
+					getRoom("Kitchen").addSquare(tempSquare);
 					break;
 				case "-":
 					board[i][j] = new WalkwaySquare(i, j);

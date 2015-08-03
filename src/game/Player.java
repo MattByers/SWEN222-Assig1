@@ -72,6 +72,11 @@ public class Player {
 		rollDice();
 		
 		while(!this.finished){
+			if(this.room != null) {
+				this.possibleActions.addAll(ROOM_ACTIONS);
+				if(this.room.getStairs() != null) this.possibleActions.add(STAIRS);
+			}
+			
 			System.out.print("What would you like to do? Your options are: ");
 			for(String action : this.possibleActions){
 				System.out.print("{" + action + "} ");
@@ -120,6 +125,8 @@ public class Player {
 	private void leaveRoom() {
 		this.location = this.room.getDoorList().get(0);
 		this.room = null;
+		this.possibleActions.removeAll(ROOM_ACTIONS);
+		this.possibleActions.remove(STAIRS);
 	}
 
 	private void useStairs() {
@@ -198,7 +205,9 @@ public class Player {
 				if(this.location instanceof DoorSquare){
 					this.room = ((DoorSquare)this.location).getRoom();
 					this.location = this.room.getSquareList().get(0);
-					System.out.printf("You have entered the %s", this.room.getName());
+					System.out.printf("You have entered the %s\n", this.room.getName());
+					this.board.printToConsole();
+					return;
 				}
 				this.diceRoll--;
 			}

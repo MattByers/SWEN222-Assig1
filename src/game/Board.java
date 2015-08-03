@@ -2,10 +2,12 @@ package game;
 
 import game.rooms.*;
 import game.squares.*;
-import java.io.File;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Board {
@@ -15,6 +17,7 @@ public class Board {
 	private ArrayList<Room> roomList = new ArrayList<>();
 	private ArrayList<PlayerSpawnSquare> spawnList = new ArrayList<>();
 	private ArrayList<DoorSquare> doorList = new ArrayList<>();
+	private Map<Player, Square> playerList = new HashMap<>();
 
 	public Board() {
 		String boardFile = "src/gameBoard.txt";
@@ -192,6 +195,10 @@ public class Board {
 		}
 	}
 
+	public void addPlayer(Player p){
+		playerList.put(p, spawnList.get(p.getPlayerNum()-1));
+	}
+	
 	public Room getRoom(String name) {
 		for (Room r : roomList) {
 			if (r.getName().equals(name)) {

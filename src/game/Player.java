@@ -1,6 +1,8 @@
 package game;
 
+import game.cards.ItemCard;
 import game.cards.PersonCard;
+import game.cards.RoomCard;
 import game.rooms.*;
 import game.squares.*;
 
@@ -23,34 +25,39 @@ public class Player {
 	
 	private int playerNum;
 	private PersonCard identity;
-	private ArrayList<Card> hand = new ArrayList<Card>();
+	private ArrayList<Card> hand;
 	private Square location;
 	private Room room;
 	private int diceRoll;
 	private boolean finished;
 	private Scanner input;
+	private GameOfCluedo game;
 	private Board board;
-	private ArrayList<String>possibleActions = new ArrayList<String>();
+	private ArrayList<String> possibleActions;
 	
-	public Player(PersonCard identity, int playerNum, Board board){
+	public Player(PersonCard identity, int playerNum, Board board, GameOfCluedo game){
+		this.game = game;
+		this.board = board;
+		
 		this.identity = identity;
 		this.playerNum = playerNum;
-		this.board = board;
+		
 		this.location = this.board.getSpawnList().get(this.playerNum - 1);
+		this.hand = new ArrayList<Card>();
 	}
 	
+	public int getPlayerNum() {
+		return playerNum;
+	}
+
 	public void giveCard (Card card){
 		this.hand.add(card);
-	}
-	
-	public void rollDice(){
-		this.diceRoll = (int)(Math.random() * 6) + (int)(Math.random() * 6);
-		System.out.println("You rolled a " + this.diceRoll);
 	}
 
 	public void takeTurn(Scanner input) {
 		this.input = input;
 		this.finished = false;
+		this.possibleActions = new ArrayList<String>();
 		
 		this.possibleActions.addAll(NORMAL_ACTIONS);
 		if(this.room != null) {
@@ -69,11 +76,13 @@ public class Player {
 			for(String action : this.possibleActions){
 				System.out.print("{" + action + "} ");
 			}
+			
 			String currentAction = input.nextLine();
 			if(!this.possibleActions.contains(currentAction)){
 				System.out.println("That is an invalid action. Please try again.");
 				continue;
 			}
+			
 			switch(currentAction){
 			case MOVE:
 				movePlayer();
@@ -102,14 +111,19 @@ public class Player {
 		}
 	}
 	
+	private void rollDice(){
+		this.diceRoll = (int)(Math.random() * 6) + (int)(Math.random() * 6);
+		System.out.println("You rolled a " + this.diceRoll);
+	}
+	
 	private void leaveRoom() {
 		this.location = this.room.getDoorList().get(0);
 		this.room = null;
 	}
 
 	private void useStairs() {
-		// TODO Auto-generated method stub
-		
+		this.room = this.room.getStairs();
+		System.out.printf("You have used the stairs and are now in the %s.", this.room.getName());
 	}
 
 	private void suggestion() {
@@ -118,13 +132,26 @@ public class Player {
 	}
 
 	private void accusation() {
-		// TODO Auto-generated method stub
+		System.out.println("Are you sure you want to make an accusation?");
+		System.out.println("If you are wrong, you will be out of the game! (Y or N)");
+		if(!this.input.nextLine().equals("Y")) return;
+		
+		System.out.println("Who would you like to accuse? Your options are: ");
+		for(PersonCard pc : this.game.getPersonCards()){
+			System.out.printf("%s", pc.getName());
+		}
+		PersonCard person;
+		ItemCard item;
+		RoomCard room;
+		System.out.printf("Player %d, your accusation of %s, %s, %s was incorrect.");
+		System.out.printf("You are out of the game!");
+		this.game.retirePlayer(this);
 		
 	}
 
 	private void showCards(){
 		
-		System.out.println("WARNING: About to show cards, other players look away now!");
+		System.out.println("WARNING: About to show your cards, other players look away now!");
 		
 		try {
 			Thread.sleep(3000);
@@ -145,6 +172,8 @@ public class Player {
 	//THIS METHOD IS BROKE TO FUCK
 	private void movePlayer(){
 		while(this.diceRoll > 0){
+			this.board.printToConsole();
+			System.out.println("");
 			System.out.printf("You have %d moves left, which direction would you like to move? (u,d,l,r): ", this.diceRoll);
 			String direction = input.next();
 			if(DIR_LIST.contains(direction) && this.board.checkMove(this, direction)){
@@ -152,6 +181,7 @@ public class Player {
 				if(this.location instanceof DoorSquare){
 					this.room = ((DoorSquare)this.location).getRoom();
 					this.location = this.room.getSquareList().get(0);
+					System.out.printf("You have entered the %s", this.room.getName());
 				}
 				this.diceRoll--;
 			}

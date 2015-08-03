@@ -26,7 +26,6 @@ public class Board {
 			System.out.println("No file found with name " + boardFile);
 		}
 
-		printToConsole();
 		addAndLinkRooms();
 		addDoors();
 		testDoors();

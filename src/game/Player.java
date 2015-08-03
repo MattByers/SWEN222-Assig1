@@ -133,7 +133,12 @@ public class Player {
 		DoorSquare exit = this.room.getDoorList().get(Integer.parseInt(this.input.nextLine()) - 1);
 		this.board.leaveRoom(this, exit);
 		this.location = exit;
+		
+		System.out.printf("You have left the %s.\n", this.room.getName());
 		this.room = null;
+		
+		this.board.printToConsole();
+		
 		this.possibleActions.removeAll(ROOM_ACTIONS);
 		this.possibleActions.remove(STAIRS);
 	}

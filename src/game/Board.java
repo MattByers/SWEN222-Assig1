@@ -219,6 +219,11 @@ public class Board {
 				break;
 			}
 		}
+		
+		for(DoorSquare d : doorList){
+			getRoom(d.getRoom().getName()).addDoor(d);
+		}
+		
 	}
 
 	public Square addPlayer(Player p) {

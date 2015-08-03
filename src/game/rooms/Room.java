@@ -26,8 +26,8 @@ public abstract class Room {
 		this.squareList.add(s);
 	}
 
-	public void addDoor(int x, int y, char ID){
-		this.doorList.add(new DoorSquare(x,y,ID));
+	public void addDoor(DoorSquare door){
+		this.doorList.add(door);
 	}
 	
 	public void addStairs(Room stairs){

@@ -147,7 +147,7 @@ public class Board {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				if(board[i][j].getPlayer() != null){
-					System.out.println(board[i][j].getPlayer().getPlayerNum());
+					System.out.print(board[i][j].getPlayer().getPlayerNum());
 				}
 				else{
 				System.out.print(board[i][j].getID());

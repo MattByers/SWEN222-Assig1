@@ -363,6 +363,7 @@ public class Board {
 	public void leaveRoom(Player p, DoorSquare ds){
 		p.getLocation().setPlayer(null);		
 		ds.setPlayer(p);
+		playerMap.put(p, ds);
 	}
 	
 	public boolean checkMove(Player p, String dir) {

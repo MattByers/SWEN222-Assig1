@@ -8,6 +8,7 @@ import game.squares.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Scanner;
 
 public class Player {
@@ -33,7 +34,7 @@ public class Player {
 	private Scanner input;
 	private GameOfCluedo game;
 	private Board board;
-	private ArrayList<String> possibleActions;
+	private HashSet<String> possibleActions;
 	
 	public Player(PersonCard identity, int playerNum, Board board, GameOfCluedo game){
 		this.game = game;
@@ -57,7 +58,7 @@ public class Player {
 	public void takeTurn(Scanner input) {
 		this.input = input;
 		this.finished = false;
-		this.possibleActions = new ArrayList<String>();
+		this.possibleActions = new HashSet<String>();
 		
 		this.possibleActions.addAll(NORMAL_ACTIONS);
 		if(this.room != null) {
@@ -72,11 +73,12 @@ public class Player {
 		rollDice();
 		
 		while(!this.finished){
-			if(this.room != null && ! this.possibleActions.contains(ROOM_ACTIONS)) {
+			if(this.room != null && !this.possibleActions.contains(ROOM_ACTIONS)) {
 				this.possibleActions.addAll(ROOM_ACTIONS);
 				if(this.room.getStairs() != null) this.possibleActions.add(STAIRS);
 			}
 			
+			System.out.println("");
 			System.out.print("What would you like to do? Your options are: ");
 			for(String action : this.possibleActions){
 				System.out.print("{" + action + "} ");
@@ -120,7 +122,7 @@ public class Player {
 	private void rollDice(){
 		this.diceRoll = (int)(Math.random() * 6) + (int)(Math.random() * 6);
 		this.diceRoll = 20; //DEBUG line
-		System.out.println("You rolled a " + this.diceRoll);
+		System.out.println("You rolled a " + this.diceRoll + "!");
 	}
 	
 	private void leaveRoom() {
@@ -133,7 +135,8 @@ public class Player {
 	private void useStairs() {
 		this.room = this.room.getStairs();
 		this.location = this.board.enterRoom(this, this.room);
-		System.out.printf("You have used the stairs and are now in the %s.", this.room.getName());
+		this.board.printToConsole();
+		System.out.printf("You have used the stairs and are now in the %s.\n", this.room.getName());
 	}
 
 	private void suggestion() {
@@ -237,16 +240,14 @@ public class Player {
 			this.board.printToConsole();
 			System.out.println("");
 			System.out.printf("You have %d moves left, which direction would you like to move? (u,d,l,r): ", this.diceRoll);
-			String direction = input.next();
+			String direction = input.nextLine();
 			if(DIR_LIST.contains(direction) && this.board.checkMove(this, direction)){
 				this.location = this.board.playerMove(this, direction);
 				if(this.location instanceof DoorSquare){
 					this.room = ((DoorSquare)this.location).getRoom();
 					this.location = this.board.enterRoom(this, this.room);
-					System.out.printf("new location: %d, %d\n", this.location.getX(), this.location.getY());
 					System.out.printf("You have entered the %s\n", this.room.getName());
-					this.board.printToConsole();
-					return;
+					this.diceRoll = 0;
 				}
 				this.diceRoll--;
 			}
@@ -255,6 +256,8 @@ public class Player {
 				continue;
 			}
 		}
+		System.out.println("You are out of moves.");
+		this.board.printToConsole();
 		this.possibleActions.remove(MOVE);
 	}
 	

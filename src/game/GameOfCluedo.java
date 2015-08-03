@@ -15,15 +15,15 @@ public class GameOfCluedo {
 	private boolean playing;
 	
 	private int numPlayers;
-	protected ArrayList<Player> players = new ArrayList<Player>();
-	protected ArrayList<Player> finishedPlayers = new ArrayList<Player>();
+	private ArrayList<Player> players;
+	private ArrayList<Player> retiredPlayers;
 	
-	private ArrayList<ItemCard> itemCards = new ArrayList<ItemCard>();
-	private ArrayList<RoomCard> roomCards = new ArrayList<RoomCard>();
-	private ArrayList<PersonCard> personCards = new ArrayList<PersonCard>();
-	
-	private ArrayList<Card> deck = new ArrayList<Card>();
-	private ArrayList<Card> envelope = new ArrayList<Card>();
+	private ArrayList<ItemCard> itemCards;
+	private ArrayList<RoomCard> roomCards;
+	private ArrayList<PersonCard> personCards;
+
+	private ArrayList<Card> deck;
+	private ArrayList<Card> envelope;
 	
 	private Board board;
 	
@@ -34,9 +34,14 @@ public class GameOfCluedo {
 		System.out.println("WARNING: THIS GAME IS TRASH!");
 		
 		int numPlayers = 0;
-		while(numPlayers < 3){
+		while(numPlayers < 3 || numPlayers > 6){
 			System.out.print("Please enter your desired number of players (3-6): ");
-			numPlayers = Integer.parseInt(input.nextLine());
+			try{
+				numPlayers = Integer.parseInt(input.nextLine());
+			}
+			catch(NumberFormatException e){
+				numPlayers = 0;
+			}
 		}
 		this.numPlayers = numPlayers;
 		
@@ -47,6 +52,7 @@ public class GameOfCluedo {
 		initEnvelope();
 		createDeck();
 		dealCards();
+		initCards();
 		
 		this.playing = true;
 		startGame();
@@ -61,6 +67,7 @@ public class GameOfCluedo {
 	}
 
 	private void createDeck() {
+		this.deck = new ArrayList<Card>();
 		for(int i = 0; i < 8; i++){
 			this.deck.add(this.roomCards.get(i));
 			if(i < 5){
@@ -71,6 +78,7 @@ public class GameOfCluedo {
 	}
 
 	private void initEnvelope() {
+		this.envelope = new ArrayList<Card>();
 		this.envelope.add(getRandomPersonCard());
 		this.envelope.add(getRandomItemCard());
 		this.envelope.add(getRandomRoomCard());
@@ -85,6 +93,11 @@ public class GameOfCluedo {
 	}
 
 	private void initCards() {
+		
+		this.personCards = new ArrayList<PersonCard>();
+		this.itemCards = new ArrayList<ItemCard>();
+		this.roomCards = new ArrayList<RoomCard>();
+		
 		this.personCards.add(new MissScarlett());
 		this.personCards.add(new ColonelMustard());
 		this.personCards.add(new MrsWhite());
@@ -111,13 +124,15 @@ public class GameOfCluedo {
 	}
 
 	private void addPlayers(){
+		this.players = new ArrayList<Player>();
+		this.retiredPlayers = new ArrayList<Player>();
+		
 		for(int i = 0; i < this.numPlayers; i++){
 			Collections.shuffle(this.personCards);
 			PersonCard identity = this.personCards.get(0);
-			this.players.add(new Player(identity, i+1, this.board));
+			this.players.add(new Player(identity, i+1, this.board, this));
 		}
 	}
-
 	
 	private PersonCard getRandomPersonCard() {
 		Collections.shuffle(this.personCards);
@@ -132,6 +147,23 @@ public class GameOfCluedo {
 	private RoomCard getRandomRoomCard() {
 		Collections.shuffle(this.roomCards);
 		return this.roomCards.remove(0);
+	}
+	
+	public int getNumPlayers() {
+		return numPlayers;
+	}
+
+	public ArrayList<ItemCard> getItemCards() {
+		return itemCards;
+	}
+
+	public ArrayList<PersonCard> getPersonCards() {
+		return personCards;
+	}
+	
+	public void retirePlayer(Player p){
+		this.players.remove(p);
+		this.retiredPlayers.add(p);
 	}
 	
 	public static void clearConsole(){

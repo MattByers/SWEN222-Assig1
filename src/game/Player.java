@@ -130,7 +130,7 @@ public class Player {
 		for(int i = 0; i < this.room.getDoorList().size(); i++){
 			System.out.printf("{%c : %d}", this.room.getDoorList().get(i).getID(), i+1);
 		}
-		DoorSquare exit = this.room.getDoorList().get(Integer.parseInt(this.input.nextLine()));
+		DoorSquare exit = this.room.getDoorList().get(Integer.parseInt(this.input.nextLine()) - 1);
 		this.board.leaveRoom(this, exit);
 		this.location = exit;
 		this.room = null;

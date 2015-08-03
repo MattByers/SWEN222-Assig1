@@ -29,10 +29,11 @@ public class Board {
 			System.out.println("No file found with name " + boardFile);
 		}
 
+		//printToConsole();
 		addAndLinkRooms();
 		addDoors();
-		testDoors();
-		testStairs();
+		//testDoors();
+		//testStairs();
 	}
 
 	private Square[][] parseBoard(Scanner sc) {
@@ -110,7 +111,8 @@ public class Board {
 					doorList.add(tempDoor);
 					break;
 				default:
-					PlayerSpawnSquare tempSpawn = new PlayerSpawnSquare(i, j, next.charAt(0));
+					PlayerSpawnSquare tempSpawn = new PlayerSpawnSquare(i, j,
+							next.charAt(0));
 					board[i][j] = tempSpawn;
 					spawnList.add(tempSpawn);
 					break;
@@ -119,28 +121,28 @@ public class Board {
 		}
 		return board;
 	}
-	
-	public void testStairs(){
-		for(Room r : roomList){
-			if(r.getStairs() != null){
-				System.out.println(r.getName() + " --> " + r.getStairs().getName());
-			}
-			else{
+
+	public void testStairs() {
+		for (Room r : roomList) {
+			if (r.getStairs() != null) {
+				System.out.println(r.getName() + " --> "
+						+ r.getStairs().getName());
+			} else {
 				System.out.println("No stairs in " + r.getName());
 			}
 		}
 	}
-	
-	public void testDoors(){
-		for(DoorSquare d : doorList){
-			System.out.println(d.getX() + "," +  d.getY() + "," + d.getID());
+
+	public void testDoors() {
+		for (DoorSquare d : doorList) {
+			System.out.println(d.getX() + "," + d.getY() + "," + d.getID());
 		}
-		
-		for(Room r : roomList){
-				System.out.print(r.getDoorList());
+
+		for (Room r : roomList) {
+			System.out.print(r.getDoorList());
 		}
 	}
-	
+
 	public void printToConsole() {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
@@ -182,11 +184,11 @@ public class Board {
 				d.addRoom(getRoom(tempRoom.getName()));
 				break;
 			case 'v':
-				tempRoom = (RoomSquare) board[d.getX()-1][d.getY()];
+				tempRoom = (RoomSquare) board[d.getX() - 1][d.getY()];
 				d.addRoom(getRoom(tempRoom.getName()));
 				break;
 			case '^':
-				tempRoom = (RoomSquare) board[d.getX()+1][d.getY()];
+				tempRoom = (RoomSquare) board[d.getX() + 1][d.getY()];
 				d.addRoom(getRoom(tempRoom.getName()));
 				break;
 			default:
@@ -195,11 +197,11 @@ public class Board {
 		}
 	}
 
-	public Square addPlayer(Player p){
-		playerMap.put(p, spawnList.get(p.getPlayerNum()-1));
-		return spawnList.get(p.getPlayerNum()-1);
+	public Square addPlayer(Player p) {
+		playerMap.put(p, spawnList.get(p.getPlayerNum() - 1));
+		return spawnList.get(p.getPlayerNum() - 1);
 	}
-	
+
 	public Room getRoom(String name) {
 		for (Room r : roomList) {
 			if (r.getName().equals(name)) {
@@ -207,6 +209,35 @@ public class Board {
 			}
 		}
 		return null;
+	}
+
+	public Square playerMove(Player p, String dir) {
+		Square tempSquare;
+		switch (dir) {
+		case "u":
+			tempSquare = board[playerMap.get(p).getX() - 1][playerMap
+					.get(p).getY()];
+			playerMap.put(p, tempSquare);
+			break;
+		case "d":
+			tempSquare = board[playerMap.get(p).getX() + 1][playerMap
+					.get(p).getY()];
+			playerMap.put(p, tempSquare);
+			break;
+		case "l":
+			tempSquare = board[playerMap.get(p).getX()][playerMap
+					.get(p).getY() - 1];
+			playerMap.put(p, tempSquare);
+			break;
+		case "r":
+			tempSquare = board[playerMap.get(p).getX()][playerMap
+					.get(p).getY() + 1];
+			playerMap.put(p, tempSquare);
+			break;
+		default:
+			break;
+		}
+		return playerMap.get(p);
 	}
 
 	public boolean checkMove(Player p, String dir) {
@@ -228,15 +259,26 @@ public class Board {
 			return false;
 		}
 	}
-	
-	//Getters
-	public ArrayList<Room> getRoomList(){return this.roomList;}
-	public ArrayList<PlayerSpawnSquare> getSpawnList(){return this.spawnList;}
-	public ArrayList<DoorSquare> getDoorList(){return this.doorList;}
-	public Map<Player, Square> getPlayerMap(){return this.playerMap;}
-	
+
+	// Getters
+	public ArrayList<Room> getRoomList() {
+		return this.roomList;
+	}
+
+	public ArrayList<PlayerSpawnSquare> getSpawnList() {
+		return this.spawnList;
+	}
+
+	public ArrayList<DoorSquare> getDoorList() {
+		return this.doorList;
+	}
+
+	public Map<Player, Square> getPlayerMap() {
+		return this.playerMap;
+	}
+
 	public static void main(String[] args) {
 		new Board();
 	}
-	//TODO roomDoor list is fucked?
+	// TODO roomDoor list is fucked?
 }

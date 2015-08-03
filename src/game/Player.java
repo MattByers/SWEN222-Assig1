@@ -84,7 +84,6 @@ public class Player {
 			
 			
 			String currentAction = input.nextLine();
-			System.out.println(currentAction);
 			if(!this.possibleActions.contains(currentAction)){
 				System.out.println("That is an invalid action. Please try again.");
 				continue;
@@ -133,45 +132,82 @@ public class Player {
 
 	private void useStairs() {
 		this.room = this.room.getStairs();
+		this.location = this.board.enterRoom(this, this.room);
 		System.out.printf("You have used the stairs and are now in the %s.", this.room.getName());
 	}
 
 	private void suggestion() {
-		// TODO Auto-generated method stub
+		
+		System.out.printf("You are making a suggestion, containing the %s\n", this.room.getName());
+		
+		System.out.println("Who would you like to accuse? Your options are: (1-6)");
+		for(int i = 0; i < this.game.getPersonCards().size(); i++){
+			System.out.printf("{%s : %d}", this.game.getPersonCards().get(i).getName(), i+1);
+		}
+		int personInd = Integer.parseInt(this.input.nextLine()) -1;
+
+		System.out.println("With which item?? Your options are: (1-6)");
+		for(int i = 0; i < this.game.getItemCards().size(); i++){
+			System.out.printf("{%s : %d}", this.game.getItemCards().get(i).getName(), i+1);
+		}
+		int itemInd = Integer.parseInt(this.input.nextLine()) -1;
+		
+		PersonCard person = this.game.getPersonCards().get(personInd);
+		ItemCard item = this.game.getItemCards().get(itemInd);
+		RoomCard room = null;
+		
+		for(RoomCard rc: this.game.getRoomCards()){
+			if(this.room.getName().equals(rc.getName())) room = rc; 
+		}
+		
+		boolean refused = this.game.checkSuggestion(room, person, item, this);
+		if(refused) System.out.println("Your suggestion was refused by a player.");
+		else System.out.println("No one refused your suggestion.");
 		
 	}
 
 	private void accusation() {
+		ArrayList<Card> envelope = this.game.getEnvelope();
+		
 		System.out.println("Are you sure you want to make an accusation?");
 		System.out.println("If you are wrong, you will be out of the game! (Y or N)");
 		if(!this.input.nextLine().equals("Y")) return;
 		
 		System.out.println("Who would you like to accuse? Your options are: (1-6)");
 		for(int i = 0; i < this.game.getPersonCards().size(); i++){
-			System.out.printf("%s : %d", this.game.getPersonCards().get(i), i+1);
+			System.out.printf("{%s : %d}", this.game.getPersonCards().get(i).getName(), i+1);
 		}
-		int personInd = Integer.parseInt(this.input.nextLine());
-		
+		int personInd = Integer.parseInt(this.input.nextLine()) -1;
+
 		System.out.println("With which item?? Your options are: (1-6)");
 		for(int i = 0; i < this.game.getItemCards().size(); i++){
-			System.out.printf("%s : %d", this.game.getItemCards().get(i), i+1);
+			System.out.printf("{%s : %d}", this.game.getItemCards().get(i).getName(), i+1);
 		}
-		int itemInd = Integer.parseInt(this.input.nextLine());
-		
+		int itemInd = Integer.parseInt(this.input.nextLine()) -1;
+
 		System.out.println("In which room??? Your options are: (1-9)");
 		for(int i = 0; i < this.game.getRoomCards().size(); i++){
-			System.out.printf("%s : %d", this.game.getRoomCards().get(i), i+1);
+			System.out.printf("{%s : %d}", this.game.getRoomCards().get(i).getName(), i+1);
 		}
-		int roomInd = Integer.parseInt(this.input.nextLine());
+		int roomInd = Integer.parseInt(this.input.nextLine()) -1;
+
 		
 		PersonCard person = this.game.getPersonCards().get(personInd);
 		ItemCard item = this.game.getItemCards().get(itemInd);
 		RoomCard room = this.game.getRoomCards().get(roomInd);
 		
-		System.out.printf("Player %d, your accusation of %s, %s, %s was incorrect.");
-		System.out.printf("You are out of the game!");
-		this.finished = true;
-		this.game.retirePlayer(this);
+		if(envelope.contains(person) && envelope.contains(item) && envelope.contains(room)){
+			System.out.println("Your accusation was correct. You win!");
+			this.game.winner = this;
+			this.game.playing = false;
+			this.finished = true;
+		}
+		else{
+			System.out.println("Your accusation of was incorrect.");
+			System.out.println("You are out of the game!");
+			this.finished = true;
+			this.game.retirePlayer(this);
+		}
 		
 	}
 
@@ -206,7 +242,7 @@ public class Player {
 				this.location = this.board.playerMove(this, direction);
 				if(this.location instanceof DoorSquare){
 					this.room = ((DoorSquare)this.location).getRoom();
-					this.location = this.room.getSquareList().get(this.room.getSquareList().size() / 2);
+					this.location = this.board.enterRoom(this, this.room);
 					System.out.printf("new location: %d, %d\n", this.location.getX(), this.location.getY());
 					System.out.printf("You have entered the %s\n", this.room.getName());
 					this.board.printToConsole();
@@ -224,5 +260,9 @@ public class Player {
 	
 	public Square getLocation(){
 		return this.location;
+	}
+
+	public ArrayList<Card> getHand() {
+		return this.hand;
 	}
 }

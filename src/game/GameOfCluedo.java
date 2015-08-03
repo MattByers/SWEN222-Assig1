@@ -12,7 +12,8 @@ import java.util.Scanner;
 
 public class GameOfCluedo {
 	
-	private boolean playing;
+	protected boolean playing;
+	protected Player winner = null;
 	
 	private int numPlayers;
 	private ArrayList<Player> players;
@@ -38,8 +39,7 @@ public class GameOfCluedo {
 			System.out.print("Please enter your desired number of players (3-6): ");
 			try{
 				numPlayers = Integer.parseInt(input.nextLine());
-			}
-			catch(NumberFormatException e){
+			}catch(NumberFormatException e){
 				numPlayers = 0;
 			}
 		}
@@ -58,12 +58,17 @@ public class GameOfCluedo {
 		startGame();
 	}
 	
+	public ArrayList<Card> getEnvelope() {
+		return envelope;
+	}
+
 	private void startGame() {
 		while(playing){
 			for(Player p : this.players){
 				p.takeTurn(this.input);
 			}
 		}
+		System.out.println("Game Over!");
 	}
 
 	private void createDeck() {
@@ -170,6 +175,19 @@ public class GameOfCluedo {
 		this.retiredPlayers.add(p);
 	}
 	
+	public boolean checkSuggestion(RoomCard room, PersonCard person,
+			ItemCard item, Player player) {
+		for(Player p : this.players){
+			if(p.equals(player)) continue;
+			for(Card c : p.getHand()){
+				if(c.equals(room) || c.equals(item) || c.equals(person))
+					return true;
+			}
+		}
+		return false;
+		
+	}
+	
 	public static void clearConsole(){
 		for(int i = 0; i < 1000; i++){
 			System.out.println("");
@@ -179,6 +197,8 @@ public class GameOfCluedo {
 	public static void main(String [] args){
 		new GameOfCluedo();
 	}
+
+	
 	
 	
 }

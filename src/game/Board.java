@@ -359,7 +359,12 @@ public class Board {
 		}
 		return null;
 	}
-
+	
+	public void leaveRoom(Player p, DoorSquare ds){
+		p.getLocation().setPlayer(null);		
+		ds.setPlayer(p);
+	}
+	
 	public boolean checkMove(Player p, String dir) {
 		Square current = p.getLocation();
 		switch (dir) {

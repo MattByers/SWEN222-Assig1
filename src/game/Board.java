@@ -204,7 +204,7 @@ public class Board {
 
 	public Square addPlayer(Player p) {
 		playerMap.put(p, spawnList.get(p.getPlayerNum() - 1));
-		spawnList.get(p.getPlayerNum()).setPlayer(p);
+		spawnList.get(p.getPlayerNum()-1).setPlayer(p);
 		return spawnList.get(p.getPlayerNum() - 1);
 	}
 

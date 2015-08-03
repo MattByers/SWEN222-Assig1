@@ -73,15 +73,16 @@ public class Player {
 		rollDice();
 		
 		while(!this.finished){
-			if(this.room != null && !this.possibleActions.contains(ROOM_ACTIONS)) {
+			
+			if(this.room != null && !this.possibleActions.contains(LEAVE_ROOM)) {
 				this.possibleActions.addAll(ROOM_ACTIONS);
 				if(this.room.getStairs() != null) this.possibleActions.add(STAIRS);
 			}
 			
 			System.out.println("");
-			System.out.print("What would you like to do? Your options are: ");
+			System.out.print("What would you like to do? Your options are: \n");
 			for(String action : this.possibleActions){
-				System.out.print("{" + action + "} ");
+				System.out.print("{" + action + "} \n");
 			}
 			
 			
@@ -90,6 +91,8 @@ public class Player {
 				System.out.println("That is an invalid action. Please try again.");
 				continue;
 			}
+			
+			System.out.println("\n");
 			
 			switch(currentAction){
 			case MOVE:
@@ -122,7 +125,7 @@ public class Player {
 	private void rollDice(){
 		this.diceRoll = (int)(Math.random() * 6) + (int)(Math.random() * 6);
 		this.diceRoll = 20; //DEBUG line
-		System.out.println("You rolled a " + this.diceRoll + "!");
+		System.out.println("You rolled a " + this.diceRoll + "!\n");
 	}
 	
 	private void leaveRoom() {
@@ -154,15 +157,15 @@ public class Player {
 		
 		System.out.printf("You are making a suggestion, containing the %s\n", this.room.getName());
 		
-		System.out.println("Who would you like to accuse? Your options are: (1-6)");
+		System.out.println("Who would you like to accuse? Your options are: (1-6)\n");
 		for(int i = 0; i < this.game.getPersonCards().size(); i++){
-			System.out.printf("{%s : %d}", this.game.getPersonCards().get(i).getName(), i+1);
+			System.out.printf("{%s : %d}\n", this.game.getPersonCards().get(i).getName(), i+1);
 		}
 		int personInd = Integer.parseInt(this.input.nextLine()) -1;
 
-		System.out.println("With which item?? Your options are: (1-6)");
+		System.out.println("\nWith which item?? Your options are: (1-6)\n");
 		for(int i = 0; i < this.game.getItemCards().size(); i++){
-			System.out.printf("{%s : %d}", this.game.getItemCards().get(i).getName(), i+1);
+			System.out.printf("{%s : %d}\n", this.game.getItemCards().get(i).getName(), i+1);
 		}
 		int itemInd = Integer.parseInt(this.input.nextLine()) -1;
 		
@@ -174,6 +177,8 @@ public class Player {
 			if(this.room.getName().equals(rc.getName())) room = rc; 
 		}
 		
+		this.possibleActions.remove(SUGGEST);
+		
 		boolean refused = this.game.checkSuggestion(room, person, item, this);
 		if(refused) System.out.println("Your suggestion was refused by a player.");
 		else System.out.println("No one refused your suggestion.");
@@ -183,25 +188,25 @@ public class Player {
 	private void accusation() {
 		ArrayList<Card> envelope = this.game.getEnvelope();
 		
-		System.out.println("Are you sure you want to make an accusation?");
+		System.out.println("\nAre you sure you want to make an accusation?");
 		System.out.println("If you are wrong, you will be out of the game! (Y or N)");
 		if(!this.input.nextLine().equals("Y")) return;
 		
-		System.out.println("Who would you like to accuse? Your options are: (1-6)");
+		System.out.println("\nWho would you like to accuse? Your options are: (1-6)\n");
 		for(int i = 0; i < this.game.getPersonCards().size(); i++){
-			System.out.printf("{%s : %d}", this.game.getPersonCards().get(i).getName(), i+1);
+			System.out.printf("{%s : %d}\n", this.game.getPersonCards().get(i).getName(), i+1);
 		}
 		int personInd = Integer.parseInt(this.input.nextLine()) -1;
 
-		System.out.println("With which item?? Your options are: (1-6)");
+		System.out.println("\nWith which item?? Your options are: (1-6)\n");
 		for(int i = 0; i < this.game.getItemCards().size(); i++){
-			System.out.printf("{%s : %d}", this.game.getItemCards().get(i).getName(), i+1);
+			System.out.printf("{%s : %d}\n", this.game.getItemCards().get(i).getName(), i+1);
 		}
 		int itemInd = Integer.parseInt(this.input.nextLine()) -1;
 
-		System.out.println("In which room??? Your options are: (1-9)");
+		System.out.println("\nIn which room??? Your options are: (1-9)\n");
 		for(int i = 0; i < this.game.getRoomCards().size(); i++){
-			System.out.printf("{%s : %d}", this.game.getRoomCards().get(i).getName(), i+1);
+			System.out.printf("{%s : %d}\n", this.game.getRoomCards().get(i).getName(), i+1);
 		}
 		int roomInd = Integer.parseInt(this.input.nextLine()) -1;
 
@@ -227,7 +232,7 @@ public class Player {
 
 	private void showCards(){
 		
-		System.out.println("WARNING: About to show your cards, other players look away now!");
+		System.out.println("WARNING: About to show your cards, other players look away now!\n");
 		
 		try {
 			Thread.sleep(3000);
@@ -236,7 +241,7 @@ public class Player {
 		}
 		
 		for(Card c : this.hand){
-			System.out.print(c.getName() + ", ");
+			System.out.println("-" + c.getName());
 		}
 		System.out.println("");
 	}
@@ -248,8 +253,9 @@ public class Player {
 	//THIS METHOD IS BROKE TO FUCK
 	private void movePlayer(){
 		while(this.diceRoll > 0){
+			
 			this.board.printToConsole();
-			System.out.println("");
+			System.out.println("\n");
 			System.out.printf("You have %d moves left, which direction would you like to move? (u,d,l,r): ", this.diceRoll);
 			String direction = input.nextLine();
 			if(DIR_LIST.contains(direction) && this.board.checkMove(this, direction)){
@@ -257,18 +263,19 @@ public class Player {
 				if(this.location instanceof DoorSquare){
 					this.room = ((DoorSquare)this.location).getRoom();
 					this.location = this.board.enterRoom(this, this.room);
-					System.out.printf("You have entered the %s\n", this.room.getName());
+					this.board.printToConsole();
+					System.out.printf("\nYou have entered the %s\n", this.room.getName());
 					this.diceRoll = 0;
 				}
-				this.diceRoll--;
+				else this.diceRoll--;
 			}
 			else{
-				System.out.println("That is an invalid direction. Please try again.");
+				System.out.println("\nThat is an invalid direction. Please try again.");
 				continue;
 			}
 		}
-		System.out.println("You are out of moves.");
-		this.board.printToConsole();
+		System.out.println("You are out of moves.\n");
+		
 		this.possibleActions.remove(MOVE);
 	}
 	

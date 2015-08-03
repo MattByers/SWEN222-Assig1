@@ -23,7 +23,7 @@ public class Board {
 		String boardFile = "src/gameBoard.txt";
 
 		addAndLinkRooms();
-		
+
 		try {
 			Scanner sc = new Scanner(new File(boardFile));
 			this.board = parseBoard(sc);
@@ -219,11 +219,11 @@ public class Board {
 				break;
 			}
 		}
-		
-		for(DoorSquare d : doorList){
+
+		for (DoorSquare d : doorList) {
 			getRoom(d.getRoom().getName()).addDoor(d);
 		}
-		
+
 	}
 
 	public Square addPlayer(Player p) {
@@ -277,6 +277,89 @@ public class Board {
 		return playerMap.get(p);
 	}
 
+	public Square enterRoom(Player p, Room r) {
+		p.getLocation().setPlayer(null);
+
+		switch (r.getName()) {
+		case "Kitchen":
+			for (RoomSquare rs : r.getSquareList()) {
+				if (rs.getX() == 3 && rs.getY() == p.getPlayerNum()) {
+					rs.setPlayer(p);
+					return rs;
+				}
+			}
+			break;
+		case "Ballroom":
+			for (RoomSquare rs : r.getSquareList()) {
+				if (rs.getX() == 4 && rs.getY() == p.getPlayerNum() + 8) {
+					rs.setPlayer(p);
+					return rs;
+				}
+			}
+			break;
+		case "Conservatory":
+			for (RoomSquare rs : r.getSquareList()) {
+				if (rs.getX() == 3 && rs.getY() == p.getPlayerNum() + 17) {
+					rs.setPlayer(p);
+					return rs;
+				}
+
+			}
+			break;
+		case "Dining Room":
+			for (RoomSquare rs : r.getSquareList()) {
+				if (rs.getX() == 13 && rs.getY() == p.getPlayerNum() + 1) {
+					rs.setPlayer(p);
+					return rs;
+				}
+			}
+			break;
+		case "Billiard Room":
+			for (RoomSquare rs : r.getSquareList()) {
+				if (rs.getX() == 10 && rs.getY() == p.getPlayerNum() + 18) {
+					rs.setPlayer(p);
+					return rs;
+				}
+			}
+			break;
+		case "Library":
+			for (RoomSquare rs : r.getSquareList()) {
+				if (rs.getX() == 15 && rs.getY() == p.getPlayerNum() + 17) {
+					rs.setPlayer(p);
+					return rs;
+				}
+			}
+			break;
+		case "Lounge":
+			for (RoomSquare rs : r.getSquareList()) {
+				if (rs.getX() == 21 && rs.getY() == p.getPlayerNum()) {
+					rs.setPlayer(p);
+					return rs;
+				}
+			}
+			break;
+		case "Hall":
+			for (RoomSquare rs : r.getSquareList()) {
+				if (rs.getX() == 21 && rs.getY() == p.getPlayerNum() + 8) {
+					rs.setPlayer(p);
+					return rs;
+				}
+			}
+			break;
+		case "Study":
+			for (RoomSquare rs : r.getSquareList()) {
+				if (rs.getX() == 22 && rs.getY() == p.getPlayerNum() + 17) {
+					rs.setPlayer(p);
+					return rs;
+				}
+			}
+			break;
+		default:
+			break;
+		}
+		return null;
+	}
+
 	public boolean checkMove(Player p, String dir) {
 		Square current = p.getLocation();
 		switch (dir) {
@@ -317,5 +400,4 @@ public class Board {
 	public static void main(String[] args) {
 		new Board();
 	}
-	// TODO roomDoor list is fucked?
 }

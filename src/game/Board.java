@@ -283,7 +283,7 @@ public class Board {
 		switch (r.getName()) {
 		case "Kitchen":
 			for (RoomSquare rs : r.getSquareList()) {
-				if (rs.getX() == 3 && rs.getY() == p.getPlayerNum()) {
+				if (rs.getX() == 3 && rs.getY() == p.getPlayerNum()-1) {
 					rs.setPlayer(p);
 					return rs;
 				}
@@ -308,7 +308,7 @@ public class Board {
 			break;
 		case "Dining Room":
 			for (RoomSquare rs : r.getSquareList()) {
-				if (rs.getX() == 13 && rs.getY() == p.getPlayerNum() + 1) {
+				if (rs.getX() == 13 && rs.getY() == p.getPlayerNum()) {
 					rs.setPlayer(p);
 					return rs;
 				}
@@ -316,7 +316,7 @@ public class Board {
 			break;
 		case "Billiard Room":
 			for (RoomSquare rs : r.getSquareList()) {
-				if (rs.getX() == 10 && rs.getY() == p.getPlayerNum() + 18) {
+				if (rs.getX() == 10 && rs.getY() == p.getPlayerNum() + 17) {
 					rs.setPlayer(p);
 					return rs;
 				}
@@ -332,7 +332,7 @@ public class Board {
 			break;
 		case "Lounge":
 			for (RoomSquare rs : r.getSquareList()) {
-				if (rs.getX() == 21 && rs.getY() == p.getPlayerNum()) {
+				if (rs.getX() == 21 && rs.getY() == p.getPlayerNum()-1) {
 					rs.setPlayer(p);
 					return rs;
 				}

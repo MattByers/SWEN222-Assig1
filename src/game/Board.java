@@ -29,7 +29,7 @@ public class Board {
 			System.out.println("No file found with name " + boardFile);
 		}
 
-		//printToConsole();
+		printToConsole();
 		addAndLinkRooms();
 		addDoors();
 		//testDoors();
@@ -112,7 +112,7 @@ public class Board {
 					break;
 				default:
 					PlayerSpawnSquare tempSpawn = new PlayerSpawnSquare(i, j,
-							next.charAt(0));
+							'@');
 					board[i][j] = tempSpawn;
 					spawnList.add(tempSpawn);
 					break;
@@ -146,7 +146,12 @@ public class Board {
 	public void printToConsole() {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
+				if(board[i][j].getPlayer() != null){
+					System.out.println(board[i][j].getPlayer().getPlayerNum());
+				}
+				else{
 				System.out.print(board[i][j].getID());
+				}
 			}
 			System.out.println();
 		}
@@ -199,6 +204,7 @@ public class Board {
 
 	public Square addPlayer(Player p) {
 		playerMap.put(p, spawnList.get(p.getPlayerNum() - 1));
+		spawnList.get(p.getPlayerNum()).setPlayer(p);
 		return spawnList.get(p.getPlayerNum() - 1);
 	}
 
@@ -217,21 +223,30 @@ public class Board {
 		case "u":
 			tempSquare = board[playerMap.get(p).getX() - 1][playerMap
 					.get(p).getY()];
+			playerMap.get(p).setPlayer(null);
+			tempSquare.setPlayer(p);
 			playerMap.put(p, tempSquare);
+			
 			break;
 		case "d":
 			tempSquare = board[playerMap.get(p).getX() + 1][playerMap
 					.get(p).getY()];
+			playerMap.get(p).setPlayer(null);
+			tempSquare.setPlayer(p);
 			playerMap.put(p, tempSquare);
 			break;
 		case "l":
 			tempSquare = board[playerMap.get(p).getX()][playerMap
 					.get(p).getY() - 1];
+			playerMap.get(p).setPlayer(null);
+			tempSquare.setPlayer(p);
 			playerMap.put(p, tempSquare);
 			break;
 		case "r":
 			tempSquare = board[playerMap.get(p).getX()][playerMap
 					.get(p).getY() + 1];
+			playerMap.get(p).setPlayer(null);
+			tempSquare.setPlayer(p);
 			playerMap.put(p, tempSquare);
 			break;
 		default:

@@ -171,6 +171,7 @@ public class Board {
 				} else {
 					System.out.print(board[i][j].getID());
 				}
+				System.out.print(" ");
 			}
 			System.out.println();
 		}

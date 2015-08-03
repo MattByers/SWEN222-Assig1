@@ -22,8 +22,8 @@ public abstract class Room {
 	public Room getStairs(){return this.stairs;}
 
 	//Setters
-	public void addSquare(int x, int y, char ID, String name){
-		this.squareList.add(new RoomSquare(x,y,ID,name));
+	public void addSquare(RoomSquare s){
+		this.squareList.add(s);
 	}
 
 	public void addDoor(int x, int y, char ID){

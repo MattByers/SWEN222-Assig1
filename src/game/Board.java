@@ -22,6 +22,8 @@ public class Board {
 	public Board() {
 		String boardFile = "src/gameBoard.txt";
 
+		addAndLinkRooms();
+		
 		try {
 			Scanner sc = new Scanner(new File(boardFile));
 			this.board = parseBoard(sc);
@@ -30,10 +32,9 @@ public class Board {
 		}
 
 		printToConsole();
-		addAndLinkRooms();
 		addDoors();
-		//testDoors();
-		//testStairs();
+		// testDoors();
+		// testStairs();
 	}
 
 	private Square[][] parseBoard(Scanner sc) {
@@ -56,39 +57,58 @@ public class Board {
 					next = sc.next();
 				}
 
+				RoomSquare tempSquare;
 				switch (next) {
 				case "#":
 					board[i][j] = new WallSquare(i, j);
 					break;
 				case "K":
-					board[i][j] = new RoomSquare(i, j, 'K', "Kitchen");
+					tempSquare = new RoomSquare(i, j, 'K', "Kitchen");
+					board[i][j] = tempSquare;
+					//getRoom("Kitchen").addSquare(tempSquare);
 					break;
 				case "-":
 					board[i][j] = new WalkwaySquare(i, j);
 					break;
 				case "B":
-					board[i][j] = new RoomSquare(i, j, 'B', "Ballroom");
+					tempSquare = new RoomSquare(i, j, 'B', "Ballroom");
+					board[i][j] = tempSquare;
+					getRoom("Ballroom").addSquare(tempSquare);
 					break;
 				case "C":
-					board[i][j] = new RoomSquare(i, j, 'C', "Conservatory");
+					tempSquare = new RoomSquare(i, j, 'C', "Conservatory");
+					board[i][j] = tempSquare;
+					getRoom("Conservatory").addSquare(tempSquare);
 					break;
 				case "D":
-					board[i][j] = new RoomSquare(i, j, 'D', "Dining Room");
+					tempSquare = new RoomSquare(i, j, 'D', "Dining Room");
+					board[i][j] = tempSquare;
+					getRoom("Dining Room").addSquare(tempSquare);
 					break;
 				case "G":
-					board[i][j] = new RoomSquare(i, j, 'G', "Billiard Room");
+					tempSquare = new RoomSquare(i, j, 'G', "Billiard Room");
+					board[i][j] = tempSquare;
+					getRoom("Billiard Room").addSquare(tempSquare);
 					break;
 				case "L":
-					board[i][j] = new RoomSquare(i, j, 'L', "Library");
+					tempSquare = new RoomSquare(i, j, 'L', "Library");
+					board[i][j] = tempSquare;
+					getRoom("Library").addSquare(tempSquare);
 					break;
 				case "T":
-					board[i][j] = new RoomSquare(i, j, 'T', "Lounge");
+					tempSquare = new RoomSquare(i, j, 'T', "Lounge");
+					board[i][j] = tempSquare;
+					getRoom("Lounge").addSquare(tempSquare);
 					break;
 				case "H":
-					board[i][j] = new RoomSquare(i, j, 'H', "Hall");
+					tempSquare = new RoomSquare(i, j, 'H', "Hall");
+					board[i][j] = tempSquare;
+					getRoom("Hall").addSquare(tempSquare);
 					break;
 				case "S":
-					board[i][j] = new RoomSquare(i, j, 'S', "Study");
+					tempSquare = new RoomSquare(i, j, 'S', "Study");
+					board[i][j] = tempSquare;
+					getRoom("Study").addSquare(tempSquare);
 					break;
 				case "<":
 					tempDoor = new DoorSquare(i, j, '<');
@@ -146,11 +166,10 @@ public class Board {
 	public void printToConsole() {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				if(board[i][j].getPlayer() != null){
+				if (board[i][j].getPlayer() != null) {
 					System.out.print(board[i][j].getPlayer().getPlayerNum());
-				}
-				else{
-				System.out.print(board[i][j].getID());
+				} else {
+					System.out.print(board[i][j].getID());
 				}
 			}
 			System.out.println();
@@ -204,7 +223,7 @@ public class Board {
 
 	public Square addPlayer(Player p) {
 		playerMap.put(p, spawnList.get(p.getPlayerNum() - 1));
-		spawnList.get(p.getPlayerNum()-1).setPlayer(p);
+		spawnList.get(p.getPlayerNum() - 1).setPlayer(p);
 		return spawnList.get(p.getPlayerNum() - 1);
 	}
 
@@ -221,30 +240,28 @@ public class Board {
 		Square tempSquare;
 		switch (dir) {
 		case "u":
-			tempSquare = board[playerMap.get(p).getX() - 1][playerMap
-					.get(p).getY()];
+			tempSquare = board[playerMap.get(p).getX() - 1][playerMap.get(p)
+					.getY()];
 			playerMap.get(p).setPlayer(null);
 			tempSquare.setPlayer(p);
 			playerMap.put(p, tempSquare);
-			
+
 			break;
 		case "d":
-			tempSquare = board[playerMap.get(p).getX() + 1][playerMap
-					.get(p).getY()];
+			tempSquare = board[playerMap.get(p).getX() + 1][playerMap.get(p)
+					.getY()];
 			playerMap.get(p).setPlayer(null);
 			tempSquare.setPlayer(p);
 			playerMap.put(p, tempSquare);
 			break;
 		case "l":
-			tempSquare = board[playerMap.get(p).getX()][playerMap
-					.get(p).getY() - 1];
+			tempSquare = board[playerMap.get(p).getX()][playerMap.get(p).getY() - 1];
 			playerMap.get(p).setPlayer(null);
 			tempSquare.setPlayer(p);
 			playerMap.put(p, tempSquare);
 			break;
 		case "r":
-			tempSquare = board[playerMap.get(p).getX()][playerMap
-					.get(p).getY() + 1];
+			tempSquare = board[playerMap.get(p).getX()][playerMap.get(p).getY() + 1];
 			playerMap.get(p).setPlayer(null);
 			tempSquare.setPlayer(p);
 			playerMap.put(p, tempSquare);

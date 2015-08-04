@@ -21,31 +21,27 @@ public class Board {
 
 	public Board() {
 		String boardFile = "src/gameBoard.txt";
-
 		addAndLinkRooms();
-
 		try {
 			Scanner sc = new Scanner(new File(boardFile));
 			this.board = parseBoard(sc);
 		} catch (FileNotFoundException e) {
 			System.out.println("No file found with name " + boardFile);
 		}
-
 		printToConsole();
-		addDoors();
-		// testDoors();
-		// testStairs();
+		addRoomsToDoors();
 	}
 
+	/**
+	 * Creates 2D array of squares and delegates square types using
+	 * parseSquares() method. iterates through each element of the scanner then
+	 * assigns this value and square type to the respective square on the board.
+	 * Populates doorList List
+	 * 
+	 * @param sc - Scanner containing board information
+	 * @return 2D array containing squares that represent the board
+	 */
 	private Square[][] parseBoard(Scanner sc) {
-		Square[][] returnBoard;
-
-		returnBoard = parseSquares(sc);
-
-		return returnBoard;
-	}
-
-	private Square[][] parseSquares(Scanner sc) {
 		String next;
 		Square[][] board = new Square[height][width];
 		DoorSquare tempDoor = null;
@@ -142,27 +138,9 @@ public class Board {
 		return board;
 	}
 
-	public void testStairs() {
-		for (Room r : roomList) {
-			if (r.getStairs() != null) {
-				System.out.println(r.getName() + " --> "
-						+ r.getStairs().getName());
-			} else {
-				System.out.println("No stairs in " + r.getName());
-			}
-		}
-	}
-
-	public void testDoors() {
-		for (DoorSquare d : doorList) {
-			System.out.println(d.getX() + "," + d.getY() + "," + d.getID());
-		}
-
-		for (Room r : roomList) {
-			System.out.print(r.getDoorList());
-		}
-	}
-
+	/**
+	 * Prints the current boards state to the console
+	 */
 	public void printToConsole() {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
@@ -177,6 +155,10 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Populates the roomList List then assigns staircases to the rooms that
+	 * contain stairs
+	 */
 	public void addAndLinkRooms() {
 		// Add all rooms to list
 		roomList.add(new Ballroom());
@@ -196,7 +178,10 @@ public class Board {
 		getRoom("Conservatory").addStairs(getRoom("Lounge"));
 	}
 
-	public void addDoors() {
+	/**
+	 * Adds rooms to the DoorSquares room field
+	 */
+	public void addRoomsToDoors() {
 		RoomSquare tempRoom;
 		for (DoorSquare d : doorList) {
 			switch (d.getID()) {
@@ -227,12 +212,24 @@ public class Board {
 
 	}
 
+	/**
+	 * Populates the playerMap from spawnList
+	 * 
+	 * @param p - new player
+	 * @return Location of the players spawn point
+	 */
 	public Square addPlayer(Player p) {
 		playerMap.put(p, spawnList.get(p.getPlayerNum() - 1));
 		spawnList.get(p.getPlayerNum() - 1).setPlayer(p);
 		return spawnList.get(p.getPlayerNum() - 1);
 	}
 
+	/**
+	 * Searches roomList List for a given name
+	 * 
+	 * @param name - name of room to be searhed
+	 * @return room with specified name
+	 */
 	public Room getRoom(String name) {
 		for (Room r : roomList) {
 			if (r.getName().equals(name)) {
@@ -242,6 +239,13 @@ public class Board {
 		return null;
 	}
 
+	/**
+	 * Moves a player 1 square in the direction specified
+	 * 
+	 * @param p - player to move
+	 * @param dir - direction to move in
+	 * @return the new square the player moved to
+	 */
 	public Square playerMove(Player p, String dir) {
 		Square tempSquare;
 		switch (dir) {
@@ -278,6 +282,13 @@ public class Board {
 		return playerMap.get(p);
 	}
 
+	/**
+	 * Delegates how the player will be displayed once they enter a room
+	 * 
+	 * @param p - player to enter the room
+	 * @param r - room to enter
+	 * @return square in the room the player is positioned
+	 */
 	public Square enterRoom(Player p, Room r) {
 		p.getLocation().setPlayer(null);
 
@@ -361,12 +372,25 @@ public class Board {
 		return null;
 	}
 
+	/**
+	 * Updates the player to be positioned at the door of a room
+	 * 
+	 * @param p - player
+	 * @param ds - doorSquare to leave through
+	 */
 	public void leaveRoom(Player p, DoorSquare ds) {
 		p.getLocation().setPlayer(null);
 		ds.setPlayer(p);
 		playerMap.put(p, ds);
 	}
 
+	/**
+	 * Checks if the specified move is legal
+	 * 
+	 * @param p - player to move
+	 * @param dir - direction to move
+	 * @return whether move is legal or not
+	 */
 	public boolean checkMove(Player p, String dir) {
 		Square current = p.getLocation();
 		switch (dir) {
@@ -377,7 +401,6 @@ public class Board {
 
 			return (board[current.getX() - 1][current.getY()] instanceof DoorSquare)
 					|| (board[current.getX() - 1][current.getY()] instanceof WalkwaySquare);
-
 		case "d":
 			if ((current.getX() + 1) > 24) {
 				return false;
@@ -402,23 +425,8 @@ public class Board {
 	}
 
 	// Getters
-	public ArrayList<Room> getRoomList() {
-		return this.roomList;
-	}
-
-	public ArrayList<PlayerSpawnSquare> getSpawnList() {
-		return this.spawnList;
-	}
-
-	public ArrayList<DoorSquare> getDoorList() {
-		return this.doorList;
-	}
-
-	public Map<Player, Square> getPlayerMap() {
-		return this.playerMap;
-	}
-
-	public static void main(String[] args) {
-		new Board();
-	}
+	public ArrayList<Room> getRoomList() {return this.roomList;}
+	public ArrayList<PlayerSpawnSquare> getSpawnList() {return this.spawnList;}
+	public ArrayList<DoorSquare> getDoorList() {return this.doorList;}
+	public Map<Player, Square> getPlayerMap() {return this.playerMap;}
 }

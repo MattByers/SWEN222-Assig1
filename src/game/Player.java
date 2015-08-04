@@ -210,6 +210,7 @@ public class Player {
 		this.board.printToConsole();
 		System.out.printf("You have used the stairs and are now in the %s.\n", this.room.getName());
 	}
+	
 	/**
 	 * Asks the user which item and person they are suggesting, then calls the game class to check the suggestion (item, person, currrent room)
 	 * against the hands of the other players to see if they refuse or accept it.
@@ -260,6 +261,7 @@ public class Player {
 		this.possibleActions.remove(SUGGEST);
 		
 	}
+	
 	/**
 	 * Like suggestion, but asks for a room as well. It also causes you to lose or win the game depending on the outcome.
 	 */

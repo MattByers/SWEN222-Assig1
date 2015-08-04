@@ -35,6 +35,7 @@ public class GameOfCluedo {
 		System.out.println("Welcome to Cluedo!");
 		System.out.println("WARNING: THIS GAME IS TRASH!");
 		
+		//Keeps looping until a number between 3 and 6 is entered
 		int numPlayers = 0;
 		while(numPlayers < 3 || numPlayers > 6){
 			System.out.print("Please enter your desired number of players (3-6): ");
@@ -62,7 +63,10 @@ public class GameOfCluedo {
 	public ArrayList<Card> getEnvelope() {
 		return envelope;
 	}
-
+	/**
+	 * Continuously loops through the list of players that are in the game currently, adding any players to be retired to a new list
+	 * then retiring them (move them from the player list, to retiredPlayer list). Sets a winner if only one players lasts.
+	 */
 	private void startGame() {
 		ArrayList<Player> toRetire = new ArrayList<Player>();
 		while(playing){
@@ -88,7 +92,9 @@ public class GameOfCluedo {
 		}
 		System.out.println("Game Over!");
 	}
-
+	/**
+	 * Joins all three decks (player, item and person cards) into one deck to be dealt.
+	 */
 	private void createDeck() {
 		this.deck = new ArrayList<Card>();
 		for(int i = 0; i < 8; i++){
@@ -99,14 +105,21 @@ public class GameOfCluedo {
 			}
 		}		
 	}
-
+	
+	/**
+	 * Takes a random card from all three decks to be placed into the envelope ( the list of solutions cards).
+	 */
 	private void initEnvelope() {
 		this.envelope = new ArrayList<Card>();
 		this.envelope.add(getRandomPersonCard());
 		this.envelope.add(getRandomItemCard());
 		this.envelope.add(getRandomRoomCard());
 	}
-
+	
+	/**
+	 * Shuffles the full deck (minus the envelope cards) and deals them to players one at a time,
+	 * first few players may get more cards. 
+	 */
 	private void dealCards() {
 		Collections.shuffle(this.deck);
 		for(int pos = 0; !this.deck.isEmpty(); pos++){
@@ -115,6 +128,9 @@ public class GameOfCluedo {
 		}
 	}
 
+	/**
+	 * Initialises the three decks with all the cards.
+	 */
 	private void initCards() {
 		
 		this.personCards = new ArrayList<PersonCard>();
@@ -146,6 +162,10 @@ public class GameOfCluedo {
 		this.roomCards.add(new Study());
 	}
 
+	/**
+	 * Creates a new players depending on number of Players given at the start, 
+	 * and picks a card from the player cards to assign that person an identity.
+	 */
 	private void addPlayers(){
 		this.players = new ArrayList<Player>();
 		this.retiredPlayers = new ArrayList<Player>();
@@ -157,16 +177,28 @@ public class GameOfCluedo {
 		}
 	}
 	
+	/**
+	 * Removes a random person card from the personCard list.
+	 * @return a random personCard.
+	 */
 	private PersonCard getRandomPersonCard() {
 		Collections.shuffle(this.personCards);
 		return this.personCards.remove(0);
 	}
 	
+	/**
+	 * Removes a random item card from the itemCard list.
+	 * @return a random itemCard.
+	 */
 	private ItemCard getRandomItemCard() {
 		Collections.shuffle(this.itemCards);
 		return this.itemCards.remove(0);
 	}
 	
+	/**
+	 * Removes a random room card from the roomCard list.
+	 * @return a random roomCard.
+	 */
 	private RoomCard getRandomRoomCard() {
 		Collections.shuffle(this.roomCards);
 		return this.roomCards.remove(0);
@@ -188,11 +220,24 @@ public class GameOfCluedo {
 		return personCards;
 	}
 	
+	/**
+	 * moves player from players to retired players
+	 * @param person to be retired.
+	 */
 	public void retirePlayer(Player p){
 		this.players.remove(p);
 		this.retiredPlayers.add(p);
 	}
 	
+	/**
+	 * Checks a suggestion against the hands of all players except the player that made the suggestion, to check if it
+	 * is a valid suggestion or not.
+	 * @param room suggested
+	 * @param person suggested
+	 * @param item suggested
+	 * @param player who made the suggestion
+	 * @return false if suggestion was not refused, true if it was refused.
+	 */
 	public boolean checkSuggestion(RoomCard room, PersonCard person,
 			ItemCard item, Player player) {
 		for(Player p : this.players){
@@ -206,6 +251,9 @@ public class GameOfCluedo {
 		
 	}
 	
+	/**
+	 * Prints lines to the console to hide the earlier moves.
+	 */
 	public static void clearConsole(){
 		for(int i = 0; i < 1000; i++){
 			System.out.println("");

@@ -20,7 +20,7 @@ public class Player {
 	private static final String SUGGEST = "suggestion";
 	private static final String ACCUSE = "accusation";
 	private static final String LEAVE_ROOM = "leave room";
-	private static final String SHOW_ENVELOPE = "show envelope";
+	private static final String SHOW_ENVELOPE = "show envelope"; //Debug action
 	private static final ArrayList<String> NORMAL_ACTIONS = new ArrayList<String>(Arrays.asList(MOVE, SHOW_CARDS, END, ACCUSE));
 	private static final ArrayList<String> ROOM_ACTIONS = new ArrayList<String>(Arrays.asList(SUGGEST, LEAVE_ROOM));
 	private static final ArrayList<String> DEBUG = new ArrayList<String>(Arrays.asList(SHOW_ENVELOPE));

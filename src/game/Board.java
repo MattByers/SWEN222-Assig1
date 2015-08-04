@@ -38,7 +38,8 @@ public class Board {
 	 * assigns this value and square type to the respective square on the board.
 	 * Populates doorList List
 	 * 
-	 * @param sc - Scanner containing board information
+	 * @param sc
+	 *            - Scanner containing board information
 	 * @return 2D array containing squares that represent the board
 	 */
 	private Square[][] parseBoard(Scanner sc) {
@@ -215,7 +216,8 @@ public class Board {
 	/**
 	 * Populates the playerMap from spawnList
 	 * 
-	 * @param p - new player
+	 * @param p
+	 *            - new player
 	 * @return Location of the players spawn point
 	 */
 	public Square addPlayer(Player p) {
@@ -227,7 +229,8 @@ public class Board {
 	/**
 	 * Searches roomList List for a given name
 	 * 
-	 * @param name - name of room to be searhed
+	 * @param name
+	 *            - name of room to be searhed
 	 * @return room with specified name
 	 */
 	public Room getRoom(String name) {
@@ -242,8 +245,10 @@ public class Board {
 	/**
 	 * Moves a player 1 square in the direction specified
 	 * 
-	 * @param p - player to move
-	 * @param dir - direction to move in
+	 * @param p
+	 *            - player to move
+	 * @param dir
+	 *            - direction to move in
 	 * @return the new square the player moved to
 	 */
 	public Square playerMove(Player p, String dir) {
@@ -285,8 +290,10 @@ public class Board {
 	/**
 	 * Delegates how the player will be displayed once they enter a room
 	 * 
-	 * @param p - player to enter the room
-	 * @param r - room to enter
+	 * @param p
+	 *            - player to enter the room
+	 * @param r
+	 *            - room to enter
 	 * @return square in the room the player is positioned
 	 */
 	public Square enterRoom(Player p, Room r) {
@@ -375,8 +382,10 @@ public class Board {
 	/**
 	 * Updates the player to be positioned at the door of a room
 	 * 
-	 * @param p - player
-	 * @param ds - doorSquare to leave through
+	 * @param p
+	 *            - player
+	 * @param ds
+	 *            - doorSquare to leave through
 	 */
 	public void leaveRoom(Player p, DoorSquare ds) {
 		p.getLocation().setPlayer(null);
@@ -387,8 +396,10 @@ public class Board {
 	/**
 	 * Checks if the specified move is legal
 	 * 
-	 * @param p - player to move
-	 * @param dir - direction to move
+	 * @param p
+	 *            - player to move
+	 * @param dir
+	 *            - direction to move
 	 * @return whether move is legal or not
 	 */
 	public boolean checkMove(Player p, String dir) {
@@ -398,11 +409,16 @@ public class Board {
 			if ((current.getX() - 1) < 0) {
 				return false;
 			}
-
+			else if(board[current.getX() - 1][current.getY()].getPlayer() != null && board[current.getX() - 1][current.getY()].getPlayer() != p){
+				return false;
+			}
 			return (board[current.getX() - 1][current.getY()] instanceof DoorSquare)
 					|| (board[current.getX() - 1][current.getY()] instanceof WalkwaySquare);
 		case "d":
 			if ((current.getX() + 1) > 24) {
+				return false;
+			}
+			else if(board[current.getX() + 1][current.getY()].getPlayer() != null && board[current.getX() + 1][current.getY()].getPlayer() != p){
 				return false;
 			}
 			return (board[current.getX() + 1][current.getY()] instanceof DoorSquare)
@@ -411,10 +427,16 @@ public class Board {
 			if ((current.getY() - 1) < 0) {
 				return false;
 			}
+			else if(board[current.getX()][current.getY() - 1].getPlayer() != null && board[current.getX()][current.getY() - 1].getPlayer() != p){
+				return false;
+			}
 			return (board[current.getX()][current.getY() - 1] instanceof DoorSquare)
 					|| (board[current.getX()][current.getY() - 1] instanceof WalkwaySquare);
 		case "r":
 			if ((current.getY() + 1) > 23) {
+				return false;
+			}
+			else if(board[current.getX()][current.getY() + 1].getPlayer() != null && board[current.getX()][current.getY() + 1].getPlayer() != p){
 				return false;
 			}
 			return (board[current.getX()][current.getY() + 1] instanceof DoorSquare)
@@ -425,8 +447,19 @@ public class Board {
 	}
 
 	// Getters
-	public ArrayList<Room> getRoomList() {return this.roomList;}
-	public ArrayList<PlayerSpawnSquare> getSpawnList() {return this.spawnList;}
-	public ArrayList<DoorSquare> getDoorList() {return this.doorList;}
-	public Map<Player, Square> getPlayerMap() {return this.playerMap;}
+	public ArrayList<Room> getRoomList() {
+		return this.roomList;
+	}
+
+	public ArrayList<PlayerSpawnSquare> getSpawnList() {
+		return this.spawnList;
+	}
+
+	public ArrayList<DoorSquare> getDoorList() {
+		return this.doorList;
+	}
+
+	public Map<Player, Square> getPlayerMap() {
+		return this.playerMap;
+	}
 }

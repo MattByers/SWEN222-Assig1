@@ -8,6 +8,7 @@ import game.cards.item.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class GameOfCluedo {
@@ -63,10 +64,28 @@ public class GameOfCluedo {
 	}
 
 	private void startGame() {
+		ArrayList<Player> toRetire = new ArrayList<Player>();
 		while(playing){
 			for(Player p : this.players){
+				if(toRetire.size() == this.numPlayers - 1 || this.playing) continue;
+				if(p.isRetired()) {
+					toRetire.add(p);
+					continue;
+				}
 				p.takeTurn(this.input);
 			}
+			
+			while(toRetire.size() != 0){
+				retirePlayer(toRetire.remove(0));
+			}
+			
+			if(this.players.size() <= 1) {
+				this.winner = this.players.get(0);
+				System.out.println("All players other have been eliminated. Player " + this.winner.getPlayerNum());
+				System.out.println("You are the winner! \n");
+				break;
+			}
+			
 		}
 		System.out.println("Game Over!");
 	}

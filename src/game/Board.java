@@ -229,7 +229,7 @@ public class Board {
 	 * Searches roomList List for a given name
 	 * 
 	 * @param name
-	 *            - name of room to be searhed
+	 *            - name of room to be searched
 	 * @return room with specified name
 	 */
 	public Room getRoom(String name) {
@@ -386,10 +386,14 @@ public class Board {
 	 * @param ds
 	 *            - doorSquare to leave through
 	 */
-	public void leaveRoom(Player p, DoorSquare ds) {
+	public boolean leaveRoom(Player p, DoorSquare ds) {
+		if(ds.getPlayer() != null && ds.getPlayer() != p){
+			return false;
+		}
 		p.getLocation().setPlayer(null);
 		ds.setPlayer(p);
 		playerMap.put(p, ds);
+		return true;
 	}
 
 	/**

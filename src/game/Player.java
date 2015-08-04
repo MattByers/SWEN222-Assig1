@@ -170,22 +170,26 @@ public class Player {
 	 * assigned a number from 1 to n.doors
 	 */
 	private void leaveRoom() {
-		
-		int exitInd = -1;
-		while(exitInd < 0 || exitInd > this.room.getDoorList().size() - 1){
-			System.out.println("Which door would you like to leave through? (1-n)");
-			for(int i = 0; i < this.room.getDoorList().size(); i++){
-				System.out.printf("{%c : %d}", this.room.getDoorList().get(i).getID(), i+1);
+		boolean freeSquare = false;
+		DoorSquare exit = null;
+		while(!freeSquare){
+			int exitInd = -1;
+			while(exitInd < 0 || exitInd > this.room.getDoorList().size() - 1){
+				System.out.println("Which door would you like to leave through? (1-n)");
+				for(int i = 0; i < this.room.getDoorList().size(); i++){
+					System.out.printf("{%c : %d}", this.room.getDoorList().get(i).getID(), i+1);
+				}
+				try{
+					exitInd = Integer.parseInt(this.input.nextLine()) -1;
+				}catch(NumberFormatException e){
+					exitInd = -1;
+				}
 			}
-			try{
-				exitInd = Integer.parseInt(this.input.nextLine()) -1;
-			}catch(NumberFormatException e){
-				exitInd = -1;
-			}
+
+			exit = this.room.getDoorList().get(exitInd);
+			freeSquare = this.board.leaveRoom(this, exit);
 		}
-			
-		DoorSquare exit = this.room.getDoorList().get(exitInd);
-		this.board.leaveRoom(this, exit);
+		
 		this.location = exit;
 		
 		System.out.printf("You have left the %s.\n", this.room.getName());

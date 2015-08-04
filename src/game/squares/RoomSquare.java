@@ -9,7 +9,5 @@ public class RoomSquare extends Square{
 		this.roomName = name;
 	}
 
-	public String getName(){
-		return this.roomName;
-	}
+	public String getName(){return this.roomName;}
 }

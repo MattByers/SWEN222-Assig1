@@ -20,8 +20,10 @@ public class Player {
 	private static final String SUGGEST = "suggestion";
 	private static final String ACCUSE = "accusation";
 	private static final String LEAVE_ROOM = "leave room";
+	private static final String SHOW_ENVELOPE = "show envelope";
 	private static final ArrayList<String> NORMAL_ACTIONS = new ArrayList<String>(Arrays.asList(MOVE, SHOW_CARDS, END, ACCUSE));
 	private static final ArrayList<String> ROOM_ACTIONS = new ArrayList<String>(Arrays.asList(SUGGEST, LEAVE_ROOM));
+	private static final ArrayList<String> DEBUG = new ArrayList<String>(Arrays.asList(SHOW_ENVELOPE));
 	private static final ArrayList<String> DIR_LIST = new ArrayList<String>(Arrays.asList("u", "d", "l", "r"));
 	
 	private int playerNum;
@@ -31,6 +33,7 @@ public class Player {
 	private Room room;
 	private int diceRoll;
 	private boolean finished;
+	private boolean retired;
 	private Scanner input;
 	private GameOfCluedo game;
 	private Board board;
@@ -39,6 +42,7 @@ public class Player {
 	public Player(PersonCard identity, int playerNum, Board board, GameOfCluedo game){
 		this.game = game;
 		this.board = board;
+		this.retired = false;
 		
 		this.identity = identity;
 		this.playerNum = playerNum;
@@ -55,7 +59,7 @@ public class Player {
 		this.hand.add(card);
 	}
 
-	public void takeTurn(Scanner input) {
+	public boolean takeTurn(Scanner input) {
 		this.input = input;
 		this.finished = false;
 		this.possibleActions = new HashSet<String>();
@@ -65,6 +69,8 @@ public class Player {
 			this.possibleActions.addAll(ROOM_ACTIONS);
 			if(this.room.getStairs() != null) this.possibleActions.add(STAIRS);
 		}
+		
+		this.possibleActions.addAll(DEBUG); //Debug tools
 		
 		GameOfCluedo.clearConsole();
 		
@@ -116,12 +122,32 @@ public class Player {
 			case STAIRS:
 				useStairs();
 				break;
+			case SHOW_ENVELOPE:
+				showEnvelope();
+				break;
 			default:
 				break;
 			}
 		}
+		return retired;
 	}
 	
+	private void showEnvelope() {
+		System.out.println("WARNING: About to show your envelope, you are either Matt, Jashon or cheating!\n");
+		
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			System.out.println("Exception " + e + " found in sleep.");
+		}
+		
+		for(Card c : this.game.getEnvelope()){
+			System.out.println("-" + c.getName());
+		}
+		System.out.println("");
+		
+	}
+
 	private void rollDice(){
 		this.diceRoll = (int)(Math.random() * 6) + (int)(Math.random() * 6);
 		this.diceRoll = 20; //DEBUG line
@@ -177,11 +203,11 @@ public class Player {
 			if(this.room.getName().equals(rc.getName())) room = rc; 
 		}
 		
-		this.possibleActions.remove(SUGGEST);
 		
 		boolean refused = this.game.checkSuggestion(room, person, item, this);
 		if(refused) System.out.println("Your suggestion was refused by a player.");
 		else System.out.println("No one refused your suggestion.");
+		this.possibleActions.remove(SUGGEST);
 		
 	}
 
@@ -216,16 +242,22 @@ public class Player {
 		RoomCard room = this.game.getRoomCards().get(roomInd);
 		
 		if(envelope.contains(person) && envelope.contains(item) && envelope.contains(room)){
-			System.out.println("Your accusation was correct. You win!");
+			System.out.println("\nYour accusation was correct. You win!");
 			this.game.winner = this;
 			this.game.playing = false;
 			this.finished = true;
 		}
 		else{
-			System.out.println("Your accusation of was incorrect.");
+			System.out.println("\nYour accusation of was incorrect.");
 			System.out.println("You are out of the game!");
 			this.finished = true;
-			this.game.retirePlayer(this);
+			this.retired = true;
+		}
+		
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			System.out.println("Exception " + e + " found in sleep.");
 		}
 		
 	}
@@ -281,6 +313,10 @@ public class Player {
 	
 	public Square getLocation(){
 		return this.location;
+	}
+	
+	public boolean isRetired(){
+		return this.retired;
 	}
 
 	public ArrayList<Card> getHand() {

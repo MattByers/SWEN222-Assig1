@@ -28,7 +28,6 @@ public class Board {
 		} catch (FileNotFoundException e) {
 			System.out.println("No file found with name " + boardFile);
 		}
-		printToConsole();
 		addRoomsToDoors();
 	}
 

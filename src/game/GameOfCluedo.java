@@ -67,7 +67,7 @@ public class GameOfCluedo {
 		ArrayList<Player> toRetire = new ArrayList<Player>();
 		while(playing){
 			for(Player p : this.players){
-				if(toRetire.size() == this.numPlayers - 1 || this.playing) continue;
+				if(toRetire.size() >= this.numPlayers - 1 || !this.playing) continue;
 				if(p.isRetired()) {
 					toRetire.add(p);
 					continue;
@@ -81,8 +81,7 @@ public class GameOfCluedo {
 			
 			if(this.players.size() <= 1) {
 				this.winner = this.players.get(0);
-				System.out.println("All players other have been eliminated. Player " + this.winner.getPlayerNum());
-				System.out.println("You are the winner! \n");
+				System.out.println("All players other have been eliminated. Player " + this.winner.getPlayerNum() + ", you are the winner! \n");
 				break;
 			}
 			

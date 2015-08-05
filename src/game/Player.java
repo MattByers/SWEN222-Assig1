@@ -27,7 +27,7 @@ public class Player {
 	private static final ArrayList<String> DIR_LIST = new ArrayList<String>(Arrays.asList("u", "d", "l", "r"));
 	
 	private int playerNum;
-	private PersonCard identity;
+
 	private ArrayList<Card> hand;
 	private Square location;
 	private Room room;
@@ -39,12 +39,11 @@ public class Player {
 	private Board board;
 	private HashSet<String> possibleActions;
 	
-	public Player(PersonCard identity, int playerNum, Board board, GameOfCluedo game){
+	public Player(int playerNum, Board board, GameOfCluedo game){
 		this.game = game;
 		this.board = board;
 		this.retired = false;
 		
-		this.identity = identity;
 		this.playerNum = playerNum;
 		
 		this.location = this.board.addPlayer(this);
@@ -76,7 +75,7 @@ public class Player {
 			if(this.room.getStairs() != null) this.possibleActions.add(STAIRS);
 		}
 		
-		this.possibleActions.addAll(DEBUG); //Debug tools
+		//this.possibleActions.addAll(DEBUG); //Debug tools
 		
 		GameOfCluedo.clearConsole();
 		
@@ -140,7 +139,6 @@ public class Player {
 	/**
 	 * Shows the current envelope to the user, method only used for debug purposes, wont be shown to a user unless enabled prior.
 	 */
-	
 	private void showEnvelope() {
 		System.out.println("WARNING: About to show the game's envelope, you are either Matt, Jashon or cheating!\n");
 		
@@ -161,7 +159,7 @@ public class Player {
 	 */
 	private void rollDice(){
 		this.diceRoll = (int)(Math.random() * 5) + (int)(Math.random() * 5) + 2;
-		this.diceRoll = 20; //DEBUG line
+		//this.diceRoll = 20; //DEBUG line
 		System.out.println("You rolled a " + this.diceRoll + "!\n");
 	}
 	
@@ -319,8 +317,7 @@ public class Player {
 		RoomCard room = this.game.getRoomCards().get(roomInd);
 		
 		if(envelope.contains(person) && envelope.contains(item) && envelope.contains(room)){
-			System.out.println("\nYour accusation was correct. You win!");
-			this.game.winner = this;
+			System.out.println("\nYour accusation was correct. Player " + this.playerNum + "you win!");
 			this.game.playing = false;
 			this.finished = true;
 		}
@@ -366,7 +363,6 @@ public class Player {
 	 * Asks the user to specify a direction,  then checks the validity of the move with board and moves them to the new square if valid. 
 	 * This continues until they are out of dice rolls. Will cause the player to enter a room if they move onto a doorway.
 	 */
-	//THIS METHOD IS BROKE TO FUCK
 	private void movePlayer(){
 		while(this.diceRoll > 0){
 			

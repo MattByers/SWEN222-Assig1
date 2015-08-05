@@ -5,16 +5,13 @@ import game.cards.person.*;
 import game.cards.rooms.*;
 import game.cards.item.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Queue;
 import java.util.Scanner;
 
 public class GameOfCluedo {
 	
 	protected boolean playing;
-	protected Player winner = null;
 	
 	private int numPlayers;
 	private ArrayList<Player> players;
@@ -84,8 +81,8 @@ public class GameOfCluedo {
 			}
 			
 			if(this.players.size() <= 1) {
-				this.winner = this.players.get(0);
-				System.out.println("All players other have been eliminated. Player " + this.winner.getPlayerNum() + ", you are the winner! \n");
+				Player winner = this.players.get(0);
+				System.out.println("All players other have been eliminated. Player " + winner.getPlayerNum() + ", you are the winner! \n");
 				break;
 			}
 			
@@ -171,9 +168,7 @@ public class GameOfCluedo {
 		this.retiredPlayers = new ArrayList<Player>();
 		
 		for(int i = 0; i < this.numPlayers; i++){
-			Collections.shuffle(this.personCards);
-			PersonCard identity = this.personCards.get(0);
-			this.players.add(new Player(identity, i+1, this.board, this));
+			this.players.add(new Player(i+1, this.board, this));
 		}
 	}
 	
